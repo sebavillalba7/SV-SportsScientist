@@ -1,0 +1,136 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ brand.nombre }} | Performance</title>
+    <meta name="description" content="{{ brand.headline }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+    <header class="nav">
+        <div class="container nav-inner">
+            <div class="logo">{{ brand.nombre }}</div>
+            <nav>
+                <a href="#servicios">Servicios</a>
+                <a href="#proyectos">Proyectos</a>
+                <a href="#dashboard">Dashboard</a>
+                <a href="#contacto" class="btn-nav">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-grid">
+            <div>
+                <span class="eyebrow">Sports Science · Performance · Data</span>
+                <h1>{{ brand.headline }}</h1>
+                <p class="lead">{{ brand.subheadline }}</p>
+
+                <div class="cta-row">
+                    <a class="btn btn-primary" href="#contacto">Trabajemos juntos</a>
+                    <a class="btn btn-secondary" href="#dashboard">Ver demo</a>
+                </div>
+
+                <div class="socials">
+                    <a href="{{ brand.linkedin }}" target="_blank">LinkedIn</a>
+                    <a href="{{ brand.instagram }}" target="_blank">Instagram</a>
+                    <a href="{{ brand.github }}" target="_blank">GitHub</a>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <div class="card-label">Tu propuesta de valor</div>
+                <h3>{{ brand.titulo }}</h3>
+                <p>
+                    Una web moderna no solo tiene que verse bien.
+                    Tiene que mostrar criterio, casos, datos, herramientas y una identidad clara.
+                </p>
+                <ul class="mini-list">
+                    <li>✔ Marca personal profesional</li>
+                    <li>✔ Visualización moderna</li>
+                    <li>✔ Servicios claros</li>
+                    <li>✔ Contacto directo</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="section">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Qué hago</span>
+                <h2>Servicios</h2>
+            </div>
+            <div class="cards-grid">
+                {% for s in servicios %}
+                <article class="card">
+                    <h3>{{ s }}</h3>
+                    <p>Servicio diseñado para transformar información en decisiones prácticas y accionables.</p>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="proyectos" class="section alt">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Casos / demos</span>
+                <h2>Proyectos destacados</h2>
+            </div>
+            <div class="cards-grid">
+                {% for p in proyectos %}
+                <article class="card">
+                    <h3>{{ p.titulo }}</h3>
+                    <p>{{ p.descripcion }}</p>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="dashboard" class="section">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Visualización</span>
+                <h2>Demo interactiva</h2>
+                <p>Esta demo usa Plotly. Después podés reemplazarla por tus datos reales o por un dashboard más completo.</p>
+            </div>
+            <div class="chart-card">
+                <div id="chart"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="section alt">
+        <div class="container contact-grid">
+            <div>
+                <span class="eyebrow">Contacto</span>
+                <h2>Hablemos</h2>
+                <p>Podés usar esta web para vender consultoría, mentorías, dashboards y servicios de análisis de rendimiento.</p>
+            </div>
+
+            <div class="card contact-card">
+                <h3>Canales directos</h3>
+                <p><strong>Email:</strong> <a href="mailto:{{ brand.email }}">{{ brand.email }}</a></p>
+                <p><strong>WhatsApp:</strong> <a href="{{ brand.whatsapp_url }}" target="_blank">Enviar mensaje</a></p>
+                <p><strong>Dominio sugerido:</strong> {{ brand.dominio_sugerido }}</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-inner">
+            <p>© {{ brand.nombre }} — Web desarrollada con Flask + Plotly</p>
+        </div>
+    </footer>
+
+    <script>
+        const figure = {{ fig_json | safe }};
+        Plotly.newPlot("chart", figure.data, figure.layout, {responsive: true});
+    </script>
+</body>
+</html>
