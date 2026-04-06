@@ -1,4 +1,4 @@
-# Sebastián Villalba — Web personal deportiva
+# Sebastián Villalba — SV-SportsScientist.com
 
 Landing profesional desarrollada con **Flask + Plotly** para mostrar servicios, proyectos y una demo visual relacionada al rendimiento deportivo.
 

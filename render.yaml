@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: sebastian-performance-site
+    name: SV-SportsScientist.com
     env: python
     buildCommand: "pip install -r requirements.txt"
     startCommand: "gunicorn app:app"
