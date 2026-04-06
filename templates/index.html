@@ -23,11 +23,13 @@
     </header>
 
     <section class="hero">
-        <div class="container hero-grid">
-            <div>
-                <span class="eyebrow">Sports Science · Performance · Data</span>
-                <h1>{{ brand.headline }}</h1>
-                <p class="lead">{{ brand.subheadline }}</p>
+    <div class="container">
+
+        <div class="hero-brand-full">
+            <img src="{{ url_for('static', filename='img/header-sv.png') }}" alt="SV Sports Scientist" class="hero-brand-image">
+        </div>
+
+        <div class="hero-grid">
 
                 <div class="cta-row">
                     <a class="btn btn-primary" href="#contacto">Trabajemos juntos</a>
