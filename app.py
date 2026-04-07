@@ -56,7 +56,7 @@ def home():
 
     return render_template(
         "index.html",
-        brand={'site_folder': 'SV-SportsScientist', 'nombre': 'Sebastián Villalba', 'titulo': 'Sports Scientist | Performance Consultant | Data Applied to Football', 'headline': 'Transformo datos deportivos en decisiones prácticas de rendimiento', 'subheadline': 'Monitoreo de cargas, análisis de rendimiento, implementación de procesos y visualización de datos para fútbol profesional.', 'primary': '#00C2FF', 'secondary': '#7C3AED', 'accent': '#22C55E', 'bg': '#07111F', 'bg_soft': '#0D1728', 'text': '#E5EEF8', 'text_soft': '#9FB3C8', 'whatsapp_url': 'https://wa.me/5490000000000', 'email': 'tuemail@ejemplo.com', 'instagram': 'https://www.instagram.com/tuusuario/', 'linkedin': 'https://www.linkedin.com/in/tuusuario/', 'github': 'https://github.com/tuusuario', 'dominio_sugerido': 'SV-SportsScientist.com'},
+        brand={'site_folder': 'SV-SportsScientist', 'nombre': 'Mag. Sebastián Villalba', 'titulo': 'Sports Scientist | Performance Consultant | Data Applied to Football', 'headline': 'Transformo datos deportivos en decisiones prácticas de rendimiento', 'subheadline': 'Monitoreo de cargas, análisis de rendimiento, implementación de procesos y visualización de datos para fútbol profesional.', 'primary': '#00C2FF', 'secondary': '#7C3AED', 'accent': '#22C55E', 'bg': '#07111F', 'bg_soft': '#0D1728', 'text': '#E5EEF8', 'text_soft': '#9FB3C8', 'whatsapp_url': 'https://wa.me/5493424391972', 'email': 'sebastiangvillalba@gmail.com', 'instagram': 'https://www.instagram.com/sebagvillalba/', 'linkedin': 'https://www.linkedin.com/in/sebastianvillalba/'},
         fig_json=fig_json,
         servicios=servicios,
         proyectos=proyectos

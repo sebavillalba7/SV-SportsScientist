@@ -4,129 +4,417 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ brand.nombre }} | Performance</title>
-    <meta name="description" content="{{ brand.headline }}">
+    <title>SV Sports Scientist | Sebastián Villalba</title>
+    <meta name="description" content="Mentoría 1:1, monitoreo de cargas, implementación de tecnologías, dashboards deportivos y análisis de rendimiento aplicado al fútbol profesional.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 </head>
 <body>
+
     <header class="nav">
         <div class="container nav-inner">
-            <div class="logo">{{ brand.nombre }}</div>
+            <a href="#top" class="brand">
+                <img src="{{ url_for('static', filename='img/logo-sv.png') }}" alt="SV Sports Scientist" class="brand-logo">
+            </a>
+
             <nav>
+                <a href="#mentoria">Mentoría 1:1</a>
                 <a href="#servicios">Servicios</a>
-                <a href="#proyectos">Proyectos</a>
+                <a href="#trayectoria">Trayectoria</a>
+                <a href="#casos">Casos de éxito</a>
                 <a href="#dashboard">Dashboard</a>
                 <a href="#contacto" class="btn-nav">Contacto</a>
             </nav>
         </div>
     </header>
 
-    <section class="hero">
-    <div class="container">
+    <main id="top">
 
-        <div class="hero-brand-full">
-            <img src="{{ url_for('static', filename='img/header-sv.png') }}" alt="SV Sports Scientist" class="hero-brand-image">
-        </div>
+        <section class="hero">
+            <div class="container hero-layout">
 
-        <div class="hero-grid">
+                <div class="hero-copy">
+                    <div class="hero-kicker">Mentoría 1:1 · GPS · Performance · Data Intelligence</div>
 
-                <div class="cta-row">
-                    <a class="btn btn-primary" href="#contacto">Trabajemos juntos</a>
-                    <a class="btn btn-secondary" href="#dashboard">Ver demo</a>
+                    <div class="hero-logo-box">
+                        <img src="{{ url_for('static', filename='img/logo-sv.png') }}" alt="SV Sports Scientist" class="hero-logo-main">
+                    </div>
+
+                    <div class="hero-pill">Qué hago</div>
+
+                    <h1>Ayudo a analistas de rendimiento a usar el GPS con criterio, seguridad e impacto real en el fútbol profesional.</h1>
+
+                    <p class="lead">
+                        En 60 días y dedicando 30 min/día, trabajo con vos para que dejes atrás el miedo a tomar decisiones determinantes y empieces a interpretar los datos con fundamento, claridad y criterio profesional.
+                    </p>
+
+                    <ul class="value-list">
+                        <li>Tus análisis aportarán información real y vas a poder usar el GPS con criterio y seguridad.</li>
+                        <li>Tus decisiones generarán impacto real en tus equipos.</li>
+                        <li>Tus pares de staff confiarán más en tu interpretación y te sentirás valorado.</li>
+                        <li>Mejorarás tu perfil profesional y tu empleabilidad, incrementando tus ingresos.</li>
+                    </ul>
+
+                    <div class="cta-row">
+                        <a class="btn btn-primary" href="#contacto">Quiero mi mentoría</a>
+                        <a class="btn btn-secondary" href="#casos">Ver casos</a>
+                    </div>
+
+                    <div class="socials">
+                        <a href="{{ brand.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+                        <a href="{{ brand.instagram }}" target="_blank" rel="noopener">Instagram</a>
+                    </div>
                 </div>
 
-                <div class="socials">
-                    <a href="{{ brand.linkedin }}" target="_blank">LinkedIn</a>
-                    <a href="{{ brand.instagram }}" target="_blank">Instagram</a>
-                    <a href="{{ brand.github }}" target="_blank">GitHub</a>
+                <div class="hero-visual">
+                    <div class="hero-photo-wrap">
+                        <div class="hero-photo-glow"></div>
+                        <img src="{{ url_for('static', filename='img/seba-hero.png') }}" alt="Sebastián Villalba" class="hero-photo">
+                    </div>
+
+                    <div class="hero-card">
+                        <div class="card-label">Propuesta de valor</div>
+                        <h3>Sports Scientist | Performance Consultant | Data Applied to Football</h3>
+                        <p>
+                            Transformo datos, contexto y experiencia de campo en decisiones prácticas que ayudan a entrenadores, cuerpos técnicos y analistas a trabajar con más criterio y más impacto.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="mentoria" class="section">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow eyebrow-strong">Servicio destacado</span>
+                    <h2>Mentoría 1:1</h2>
+                    <p>
+                        Un proceso individual para analistas, preparadores físicos y profesionales del fútbol que quieren dar el salto: ordenar criterios, interpretar mejor el GPS, comunicar con más seguridad y ganar valor real dentro de un staff.
+                    </p>
+                </div>
+
+                <article class="card card-featured">
+                    <div class="feature-badge">Mentoría premium</div>
+                    <h3>De los datos a la toma de decisiones en el fútbol de élite</h3>
+                    <p>
+                        La mentoría está pensada para que puedas aplicar el GPS con criterio, mejorar tu lectura del contexto, construir reportes que realmente sirvan y posicionarte profesionalmente con más seguridad frente a entrenadores, médicos y pares de staff.
+                    </p>
+
+                    <div class="feature-grid">
+                        <div>
+                            <h4>Qué trabajamos</h4>
+                            <ul>
+                                <li>Interpretación práctica del GPS según objetivo del día y momento competitivo.</li>
+                                <li>Diseño de reportes útiles para cuerpo técnico.</li>
+                                <li>Lectura individual y colectiva de cargas.</li>
+                                <li>Criterios para comunicar decisiones con claridad y respaldo.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4>Qué te llevás</h4>
+                            <ul>
+                                <li>Más seguridad profesional.</li>
+                                <li>Más criterio para decidir.</li>
+                                <li>Más impacto en tu equipo.</li>
+                                <li>Más valor y mejor posicionamiento laboral.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="servicios" class="section alt">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">Servicios</span>
+                    <h2>Qué puedo aportar</h2>
+                </div>
+
+                <div class="cards-grid cards-grid-5">
+
+                    <article class="card card-accent">
+                        <h3>Mentoría 1:1</h3>
+                        <p>
+                            Acompañamiento personalizado para profesionales que quieren usar el GPS con más criterio, interpretar mejor la información y tomar decisiones con seguridad en contextos de alto rendimiento.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <h3>Monitoreo y gestión de cargas</h3>
+                        <p>
+                            Trabajo con carga externa e interna integrando GPS, métricas por sesión y microciclo, lectura contextual del entrenamiento, comparativas por puesto, cálculos de referencia y análisis aplicado a la toma de decisiones del staff.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <h3>Implementación de tecnologías</h3>
+                        <p>
+                            Me mantengo actualizada en herramientas y tendencias del área para evaluar qué necesita realmente cada club. Analizo procesos, objetivos, presupuesto y contexto operativo para recomendar e implementar tecnología con criterio, como si fuera una auditoría de rendimiento.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <h3>Dashboards deportivos</h3>
+                        <p>
+                            Desarrollo soluciones en Power BI y Python para transformar datos complejos en tableros claros, visuales y accionables, facilitando el seguimiento diario, semanal y competitivo por jugador, puesto, sesión o microciclo.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <h3>Análisis de rendimiento</h3>
+                        <p>
+                            Mi formación académica, experiencia de campo y mirada interdisciplinaria me permiten interpretar los datos con un criterio diferencial. Eso se traduce en decisiones reconocidas por su coherencia, utilidad práctica y valor para el rendimiento.
+                        </p>
+                    </article>
+
                 </div>
             </div>
+        </section>
 
-            <div class="hero-card">
-                <div class="card-label">Tu propuesta de valor</div>
-                <h3>{{ brand.titulo }}</h3>
-                <p>
-                    Una web moderna no solo tiene que verse bien.
-                    Tiene que mostrar criterio, casos, datos, herramientas y una identidad clara.
-                </p>
-                <ul class="mini-list">
-                    <li>✔ Marca personal profesional</li>
-                    <li>✔ Visualización moderna</li>
-                    <li>✔ Servicios claros</li>
-                    <li>✔ Contacto directo</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+        <section id="trayectoria" class="section">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">Trayectoria</span>
+                    <h2>Experiencia profesional y formación académica</h2>
+                </div>
 
-    <section id="servicios" class="section">
-        <div class="container">
-            <div class="section-head">
-                <span class="eyebrow">Qué hago</span>
-                <h2>Servicios</h2>
-            </div>
-            <div class="cards-grid">
-                {% for s in servicios %}
-                <article class="card">
-                    <h3>{{ s }}</h3>
-                    <p>Servicio diseñado para transformar información en decisiones prácticas y accionables.</p>
-                </article>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
+                <div class="timeline-grid">
 
-    <section id="proyectos" class="section alt">
-        <div class="container">
-            <div class="section-head">
-                <span class="eyebrow">Casos / demos</span>
-                <h2>Proyectos destacados</h2>
-            </div>
-            <div class="cards-grid">
-                {% for p in proyectos %}
-                <article class="card">
-                    <h3>{{ p.titulo }}</h3>
-                    <p>{{ p.descripcion }}</p>
-                </article>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
+                    <div class="timeline-col">
+                        <div class="timeline-title">Trayectoria profesional</div>
 
-    <section id="dashboard" class="section">
-        <div class="container">
-            <div class="section-head">
-                <span class="eyebrow">Visualización</span>
-                <h2>Demo interactiva</h2>
-                <p>Esta demo usa Plotly. Después podés reemplazarla por tus datos reales o por un dashboard más completo.</p>
-            </div>
-            <div class="chart-card">
-                <div id="chart"></div>
-            </div>
-        </div>
-    </section>
+                        <div class="timeline-item">
+                            <span class="timeline-date">2022 – Presente</span>
+                            <h3>Club Atlético Unión — Sports Scientist</h3>
+                            <p>Plantel profesional AFA. Monitoreo y gestión de cargas de trabajo, evaluaciones físicas y coordinación del área de análisis de rendimiento.</p>
+                        </div>
 
-    <section id="contacto" class="section alt">
-        <div class="container contact-grid">
-            <div>
-                <span class="eyebrow">Contacto</span>
-                <h2>Hablemos</h2>
-                <p>Podés usar esta web para vender consultoría, mentorías, dashboards y servicios de análisis de rendimiento.</p>
-            </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">2022 – Presente</span>
+                            <h3>SV Sports Scientist — Sports Scientist</h3>
+                            <p>Consultoría en monitoreo y gestión de cargas, análisis de rendimiento, capacitaciones y trabajo con profesionales y clubes.</p>
+                        </div>
 
-            <div class="card contact-card">
-                <h3>Canales directos</h3>
-                <p><strong>Email:</strong> <a href="mailto:{{ brand.email }}">{{ brand.email }}</a></p>
-                <p><strong>WhatsApp:</strong> <a href="{{ brand.whatsapp_url }}" target="_blank">Enviar mensaje</a></p>
-                <p><strong>Dominio sugerido:</strong> {{ brand.dominio_sugerido }}</p>
+                        <div class="timeline-item">
+                            <span class="timeline-date">01/2021 – 06/2023</span>
+                            <h3>Club Atlético Unión — Preparador físico de básquet</h3>
+                            <p>Monitoreo de cargas, evaluaciones físicas y diseño de programas de fuerza y potencia. Campeón Liga Argentina 2021 y ascenso a Liga Nacional.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <span class="timeline-date">07/2019 – 01/2021</span>
+                            <h3>Selección China Femenina de Basketball — Preparador físico</h3>
+                            <p>Trabajo en monitoreo, control de carga y preparación física en el proceso de Copa de Asia y clasificación olímpica.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <span class="timeline-date">2017 – 2018</span>
+                            <h3>Club Atlético Patronato — Preparador físico</h3>
+                            <p>Plantel profesional de fútbol. Monitoreo y gestión de cargas, evaluaciones físicas y programas de fuerza y potencia.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <span class="timeline-date">2012 – 2019</span>
+                            <h3>Club Atlético Villa Dora — Preparador físico</h3>
+                            <p>Evaluaciones físicas, monitoreo y diseño del entrenamiento. Campeón Liga Nacional 2016.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-col">
+                        <div class="timeline-title">Trayectoria académica</div>
+
+                        <div class="timeline-item">
+                            <span class="timeline-date">En curso</span>
+                            <h3>Máster en Python Aplicado al Deporte</h3>
+                            <p>Universidad Católica de Murcia (UCAM), España.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <span class="timeline-date">2020 – 2021</span>
+                            <h3>Máster en Big Data Aplicado al Deporte</h3>
+                            <p>Universidad Católica de Murcia (UCAM), España. Mag. Big Data Sports.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <span class="timeline-date">2021</span>
+                            <h3>Postgrado en Ciencias del Deporte — Científico Deportivo</h3>
+                            <p>Universidad Francisco de Vitoria (UFV), España.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <span class="timeline-date">2007 – 2010</span>
+                            <h3>Profesor de Educación Física</h3>
+                            <p>ISEF Nº27, Santa Fe, Argentina. Especialidad en entrenamiento deportivo.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <span class="timeline-date">Cursos y certificaciones</span>
+                            <p>Catapult, Licencia Preparador Físico CONMEBOL A, R en estadísticas en fútbol, monitoreo y control de la carga, especialista en GPS en fútbol, biomecánica aplicada al deporte, FMS y más.</p>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section id="casos" class="section alt">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">Casos</span>
+                    <h2>Casos de éxito</h2>
+                    <p>
+                        Acá podés mostrar experiencias, resultados y procesos de trabajo con entrenadores, analistas o clubes. Por ahora te lo dejo con ejemplos para reemplazar.
+                    </p>
+                </div>
+
+                <div class="cases-grid">
+
+                    <article class="case-card">
+                        <img src="{{ url_for('static', filename='img/caso-1.jpg') }}" alt="Caso 1">
+                        <div class="case-body">
+                            <span class="case-tag">Analista de rendimiento</span>
+                            <h3>De reportes descriptivos a decisiones con criterio</h3>
+                            <p>Un profesional que ya registraba datos, pero no lograba convertirlos en información realmente útil para el staff. Se trabajó lectura contextual y comunicación.</p>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <img src="{{ url_for('static', filename='img/caso-2.jpg') }}" alt="Caso 2">
+                        <div class="case-body">
+                            <span class="case-tag">Preparador físico</span>
+                            <h3>Implementación de GPS con foco práctico</h3>
+                            <p>Se ordenó el uso del GPS, se definieron métricas útiles por objetivo del día y se construyó una lógica de toma de decisiones alineada al modelo de juego.</p>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <img src="{{ url_for('static', filename='img/caso-3.jpg') }}" alt="Caso 3">
+                        <div class="case-body">
+                            <span class="case-tag">Club profesional</span>
+                            <h3>Dashboard para cuerpo técnico</h3>
+                            <p>Se pasó de hojas dispersas a una visualización clara en Power BI, permitiendo decisiones más rápidas por jugador, puesto, sesión y microciclo.</p>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <img src="{{ url_for('static', filename='img/caso-4.jpg') }}" alt="Caso 4">
+                        <div class="case-body">
+                            <span class="case-tag">Mentoría 1:1</span>
+                            <h3>Más seguridad frente al staff</h3>
+                            <p>Se trabajó criterio, lenguaje y estructura de informes para que el profesional pudiera sostener sus decisiones con más claridad y respaldo.</p>
+                        </div>
+                    </article>
+
+                    <article class="case-card">
+                        <img src="{{ url_for('static', filename='img/caso-5.jpg') }}" alt="Caso 5">
+                        <div class="case-body">
+                            <span class="case-tag">Alto rendimiento</span>
+                            <h3>Lectura integral del rendimiento</h3>
+                            <p>Se integraron datos de carga, evaluaciones físicas y contexto competitivo para construir una mirada más completa y más útil para el proceso.</p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="section">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">Demo</span>
+                    <h2>Demo interactiva</h2>
+                    <p>
+                        Esta demo es la base. El próximo paso es conectarla a tu archivo Excel para agregar filtros por semana, sesión, posición y jugador.
+                    </p>
+                </div>
+
+                <div class="chart-card">
+                    <div id="chart"></div>
+                </div>
+
+                <div class="demo-steps">
+                    <div class="demo-step"><strong>1.</strong> Subir la base a `static/data` o leerla desde Python.</div>
+                    <div class="demo-step"><strong>2.</strong> Crear filtros por semana, sesión, posición y jugador.</div>
+                    <div class="demo-step"><strong>3.</strong> Mostrar gráfico por posición y tabla con semáforos.</div>
+                    <div class="demo-step"><strong>4.</strong> Permitir interacción real desde la web para que el visitante explore.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section alt">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">Clubes</span>
+                    <h2>Experiencia en clubes y organizaciones</h2>
+                </div>
+
+                <div class="logo-marquee">
+                    <div class="logo-track">
+                        <img src="{{ url_for('static', filename='img/club-union.png') }}" alt="Unión">
+                        <img src="{{ url_for('static', filename='img/club-svss.png') }}" alt="SV Sports Scientist">
+                        <img src="{{ url_for('static', filename='img/club-china.png') }}" alt="China Basketball">
+                        <img src="{{ url_for('static', filename='img/club-patronato.png') }}" alt="Patronato">
+                        <img src="{{ url_for('static', filename='img/club-villadora.png') }}" alt="Villa Dora">
+
+                        <img src="{{ url_for('static', filename='img/club-union.png') }}" alt="Unión">
+                        <img src="{{ url_for('static', filename='img/club-svss.png') }}" alt="SV Sports Scientist">
+                        <img src="{{ url_for('static', filename='img/club-china.png') }}" alt="China Basketball">
+                        <img src="{{ url_for('static', filename='img/club-patronato.png') }}" alt="Patronato">
+                        <img src="{{ url_for('static', filename='img/club-villadora.png') }}" alt="Villa Dora">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto" class="section">
+            <div class="container contact-grid">
+                <div>
+                    <span class="eyebrow eyebrow-strong">Hablemos</span>
+                    <h2>Mentoría, consultoría y proyectos aplicados al alto rendimiento</h2>
+                    <p class="contact-copy">
+                        Si trabajás en fútbol y querés transformar datos en decisiones con criterio, mi mentoría y mis servicios pueden ayudarte a ordenar procesos, mejorar tu lectura del contexto y dar un salto profesional real. La idea no es solo mostrar datos, sino aprender a usarlos para generar impacto en el equipo y valor dentro del staff.
+                    </p>
+                </div>
+
+                <div class="card contact-card">
+                    <h3>Canales directos</h3>
+
+                    <div class="contact-item">
+                        <span class="contact-icon">✉</span>
+                        <a href="mailto:{{ brand.email }}">{{ brand.email }}</a>
+                    </div>
+
+                    <div class="contact-item">
+                        <span class="contact-icon">🟢</span>
+                        <a href="{{ brand.whatsapp_url }}" target="_blank" rel="noopener">WhatsApp</a>
+                    </div>
+
+                    <div class="contact-item">
+                        <span class="contact-icon">in</span>
+                        <a href="{{ brand.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+                    </div>
+
+                    <div class="contact-item">
+                        <span class="contact-icon">◎</span>
+                        <a href="{{ brand.instagram }}" target="_blank" rel="noopener">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <footer class="footer">
         <div class="container footer-inner">
-            <p>© {{ brand.nombre }} — Web desarrollada con Flask + Plotly</p>
+            <p>© SV Sports Scientist — Sebastián Villalba</p>
         </div>
     </footer>
 
