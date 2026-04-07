@@ -9,7 +9,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap" rel="stylesheet"">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
@@ -38,38 +38,59 @@
         <section class="hero">
             <div class="container hero-layout">
 
-                <div class="hero-copy">
-                    <div class="hero-kicker">Mentoría 1:1 · GPS · Performance · Data Intelligence</div>
+                <div class="container hero-layout">
 
-                    <div class="hero-logo-box">
-                        <img src="{{ url_for('static', filename='img/logo-sv.png') }}" alt="SV Sports Scientist" class="hero-logo-main">
-                    </div>
+					<div class="hero-top">
+						<div class="hero-logo-side">
+							<div class="hero-kicker">MENTORÍA 1:1 · GPS · PERFORMANCE · DATA INTELLIGENCE</div>
 
-                    <div class="hero-pill">Qué hago</div>
+							<div class="hero-logo-box">
+								<img src="{{ url_for('static', filename='img/logo-sv.png') }}" alt="SV Sports Scientist" class="hero-logo-main">
+							</div>
+						</div>
 
-                    <h1>Ayudo a analistas de rendimiento a usar el GPS con criterio, seguridad e impacto real en el fútbol profesional.</h1>
+						<div class="hero-photo-side">
+							<div class="hero-photo-wrap compact">
+								<div class="hero-photo-glow"></div>
+								<img src="{{ url_for('static', filename='img/seba-hero.png') }}" alt="Sebastián Villalba" class="hero-photo hero-photo-small">
+							</div>
+						</div>
+					</div>
 
-                    <p class="lead">
-                        En 60 días y dedicando 30 min/día, trabajo con vos para que dejes atrás el miedo a tomar decisiones determinantes y empieces a interpretar los datos con fundamento, claridad y criterio profesional.
-                    </p>
+					<div class="hero-bottom">
+						<div class="hero-copy">
+							<div class="hero-pill">QUÉ HAGO</div>
 
-                    <ul class="value-list">
-                        <li>Tus análisis aportarán información real y vas a poder usar el GPS con criterio y seguridad.</li>
-                        <li>Tus decisiones generarán impacto real en tus equipos.</li>
-                        <li>Tus pares de staff confiarán más en tu interpretación y te sentirás valorado.</li>
-                        <li>Mejorarás tu perfil profesional y tu empleabilidad, incrementando tus ingresos.</li>
-                    </ul>
+							<h1 class="hero-title-stencil">MENTORÍA APLICADA AL GPS Y AL RENDIMIENTO EN FÚTBOL PROFESIONAL</h1>
 
-                    <div class="cta-row">
-                        <a class="btn btn-primary" href="#contacto">Quiero mi mentoría</a>
-                        <a class="btn btn-secondary" href="#casos">Ver casos</a>
-                    </div>
+							<h2 class="hero-subtitle">
+								Ayudo a analistas de rendimiento a usar el GPS con criterio, seguridad e impacto real en el fútbol profesional.
+							</h2>
 
-                    <div class="socials">
-                        <a href="{{ brand.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
-                        <a href="{{ brand.instagram }}" target="_blank" rel="noopener">Instagram</a>
-                    </div>
-                </div>
+							<p class="lead">
+								En 60 días y dedicando 30 min/día, trabajo con vos para que dejes atrás el miedo a tomar decisiones determinantes y empieces a interpretar los datos con fundamento, claridad y criterio profesional.
+							</p>
+
+							<ul class="value-list">
+								<li>Tus análisis aportarán información real y vas a poder usar el GPS con criterio y seguridad.</li>
+								<li>Tus decisiones generarán impacto real en tus equipos.</li>
+								<li>Tus pares de staff confiarán más en tu interpretación y te sentirás valorado.</li>
+								<li>Mejorarás tu perfil profesional y tu empleabilidad, incrementando tus ingresos.</li>
+							</ul>
+
+							<div class="cta-row">
+								<a class="btn btn-primary" href="#contacto">QUIERO MI MENTORÍA</a>
+								<a class="btn btn-secondary" href="#casos">VER CASOS</a>
+							</div>
+
+							<div class="socials">
+								<a href="{{ brand.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+								<a href="{{ brand.instagram }}" target="_blank" rel="noopener">Instagram</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
 
                 <div class="hero-visual">
                     <div class="hero-photo-wrap">
@@ -106,27 +127,31 @@
                         La mentoría está pensada para que puedas aplicar el GPS con criterio, mejorar tu lectura del contexto, construir reportes que realmente sirvan y posicionarte profesionalmente con más seguridad frente a entrenadores, médicos y pares de staff.
                     </p>
 
-                    <div class="feature-grid">
-                        <div>
-                            <h4>Qué trabajamos</h4>
-                            <ul>
-                                <li>Interpretación práctica del GPS según objetivo del día y momento competitivo.</li>
-                                <li>Diseño de reportes útiles para cuerpo técnico.</li>
-                                <li>Lectura individual y colectiva de cargas.</li>
-                                <li>Criterios para comunicar decisiones con claridad y respaldo.</li>
-                            </ul>
-                        </div>
+					<div class="feature-grid feature-grid-mentoria">
+					<div>
+						<h4>Qué trabajamos</h4>
+						<ul>
+							<li>Interpretación práctica del GPS según objetivo del día y momento competitivo.</li>
+							<li>Diseño de reportes útiles para cuerpo técnico.</li>
+							<li>Lectura individual y colectiva de cargas.</li>
+							<li>Criterios para comunicar decisiones con claridad y respaldo.</li>
+						</ul>
+					</div>
 
-                        <div>
-                            <h4>Qué te llevás</h4>
-                            <ul>
-                                <li>Más seguridad profesional.</li>
-                                <li>Más criterio para decidir.</li>
-                                <li>Más impacto en tu equipo.</li>
-                                <li>Más valor y mejor posicionamiento laboral.</li>
-                            </ul>
-                        </div>
-                    </div>
+					<div>
+						<h4>Qué te llevás</h4>
+						<ul>
+							<li>Más seguridad profesional.</li>
+							<li>Más criterio para decidir.</li>
+							<li>Más impacto en tu equipo.</li>
+							<li>Más valor y mejor posicionamiento laboral.</li>
+						</ul>
+					</div>
+
+    <div class="mentoria-visual">
+        <img src="{{ url_for('static', filename='img/mentoria-dashboard.png') }}" alt="Dashboard mentoría" class="mentoria-img">
+    </div>
+</div>
                 </article>
             </div>
         </section>
@@ -229,7 +254,7 @@
                     </div>
 
                     <div class="timeline-col">
-                        <div class="timeline-title">Trayectoria académica</div>
+                        <div class="timeline-title">Formación</div>
 
                         <div class="timeline-item">
                             <span class="timeline-date">En curso</span>
@@ -256,10 +281,18 @@
                         </div>
 
                         <div class="timeline-item">
-                            <span class="timeline-date">Cursos y certificaciones</span>
-                            <p>Catapult, Licencia Preparador Físico CONMEBOL A, R en estadísticas en fútbol, monitoreo y control de la carga, especialista en GPS en fútbol, biomecánica aplicada al deporte, FMS y más.</p>
-                        </div>
-                    </div>
+							<span class="timeline-date">CURSOS Y CERTIFICACIONES</span>
+							<ul class="cert-list">
+								<li>Certificación Catapult en rendimiento físico</li>
+								<li>Licencia Preparador Físico CONMEBOL A</li>
+								<li>Curso de R en estadísticas en fútbol</li>
+								<li>Monitoreo y control de la carga</li>
+								<li>Especialista en GPS en fútbol</li>
+								<li>Certificación universitaria en monitoreo de cargas</li>
+								<li>Biomecánica aplicada al deporte</li>
+								<li>Certificación en FMS</li>
+							</ul>
+						</div>
 
                 </div>
             </div>
