@@ -911,3 +911,129 @@ nav a {
         margin-bottom: 8px;
     }
 }
+/* ===== MENTORÍA ===== */
+.section-head-flex {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(260px, 360px);
+    gap: 28px;
+    align-items: start;
+}
+
+.section-head-visual {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.mentoria-video,
+.mentoria-head-img {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    display: block;
+}
+
+/* ===== TEXTO ANCHO EN SECCIONES ===== */
+.section-head p,
+.card p,
+.case-body p,
+.contact-copy,
+.lead,
+.intro-text-block p {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* ===== INTRO TRAYECTORIA ===== */
+.intro-text-block {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 0 28px;
+}
+
+.intro-text-block p {
+    color: var(--text-soft);
+    line-height: 1.8;
+    margin: 0 0 14px;
+}
+
+/* ===== TRAYECTORIA PROFESIONAL / FORMACIÓN ===== */
+.timeline-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px;
+    align-items: start;
+}
+
+.timeline-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: #BCD8FF;
+    font-family: 'Saira Stencil One', sans-serif;
+    letter-spacing: 0.03em;
+}
+
+.timeline-item {
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.timeline-item-logo {
+    display: grid;
+    grid-template-columns: 86px 1fr;
+    gap: 18px;
+    align-items: center;
+}
+
+.timeline-logo {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    justify-self: center;
+}
+
+.timeline-item h3 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    line-height: 1.3;
+}
+
+.timeline-item p {
+    margin: 0;
+}
+
+.cert-list {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    color: var(--text-soft);
+    line-height: 1.8;
+}
+
+.cert-list li {
+    margin-bottom: 6px;
+}
+
+@media (max-width: 980px) {
+    .section-head-flex,
+    .timeline-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-head-visual {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 680px) {
+    .timeline-item-logo {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .timeline-logo {
+        margin-bottom: 8px;
+    }
+}
