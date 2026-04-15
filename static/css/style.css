@@ -156,7 +156,7 @@ nav a {
     font-size: clamp(2.3rem, 4.2vw, 4.7rem);
     line-height: 1.02;
     letter-spacing: -0.03em;
-    max-width: 820px;
+    max-width: 1100px;
 }
 
 .lead {
@@ -681,7 +681,7 @@ nav a {
 
 .mentoria-video {
     width: 100%;
-    max-width: 360px;
+    max-width: 300px;
     border-radius: 18px;
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
