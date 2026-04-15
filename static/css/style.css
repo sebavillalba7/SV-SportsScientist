@@ -137,13 +137,13 @@ nav a {
 }
 
 .hero-logo-box {
-    margin-bottom: 18px;
+    margin-bottom: 8px;
 }
 
 .hero-logo-side {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: right;
 }
 
 .hero-logo-main {
