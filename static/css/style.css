@@ -109,22 +109,6 @@ nav a {
     pointer-events: none;
 }
 
-.hero-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.hero-layout {
-    display: block;
-}
-
-.hero-top {
-    display: grid;
-    grid-template-columns: 1.25fr 0.75fr;
-    gap: 28px;
-    align-items: center;
-}
 
 .hero-kicker {
     display: inline-block;
@@ -142,12 +126,6 @@ nav a {
 
 .hero-logo-box {
     margin-bottom: 8px;
-}
-
-.hero-logo-side {
-    display: flex;
-    flex-direction: column;
-    justify-content: right;
 }
 
 .hero-logo-main {
@@ -306,36 +284,8 @@ nav a {
     gap: 24px;
 }
 
-.hero-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 40px;
-}
-
-.hero-logo-side {
-    flex: 1;
-    display: flex;
-    justify-content: flex-start;
-}
-
-.hero-photo-side {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-}
-
 .hero-bottom {
     display: block;
-}
-
-.hero-logo-main {
-    max-width: 600px;
-    width: 100%;
-}
-
-.hero-photo-wrap {
-    max-width: 320px;
 }
 
 .hero-title-stencil,
@@ -728,97 +678,6 @@ nav a {
     font-weight: 500;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .hero-top {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .hero-logo-main {
-        width: 300px;
-    }
-
-    .hero-photo {
-        width: 200px;
-    }
-
-    .mentoria-video {
-        width: 100%;
-    }
-}
-/* ===== HERO FIX FINAL ===== */
-.hero-top {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
-    align-items: center;
-    gap: 40px;
-}
-
-.hero-logo-side {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-}
-
-.hero-photo-side {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.hero-logo-main {
-    width: min(700px, 100%);
-}
-
-.hero-photo-wrap {
-    width: 100%;
-    max-width: 320px;
-    aspect-ratio: 1 / 1.25;
-}
-
-.hero-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 48% 48% 46% 46% / 38% 38% 58% 58%;
-}
-
-@media (max-width: 980px) {
-    .hero-top {
-        grid-template-columns: 1fr;
-        gap: 28px;
-    }
-
-    .hero-logo-side,
-    .hero-photo-side {
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-
-    .hero-logo-main {
-        width: min(560px, 100%);
-    }
-
-    .hero-photo-wrap {
-        max-width: 280px;
-    }
-}
-/* ===== MENTORIA VIDEO FIX ===== */
-.section-head-flex {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(240px, 380px);
-    gap: 28px;
-    align-items: start;
-}
-
-.section-head-visual {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-}
 
 .mentoria-video {
     width: 100%;
@@ -846,72 +705,76 @@ nav a {
         justify-content: flex-start;
     }
 }
-/* ===== INTRO TRAYECTORIA ===== */
-.intro-text-block {
-    max-width: 920px;
-    margin: 0 0 28px;
+/* ===== AJUSTES FINALES LIMPIOS ===== */
+
+/* HERO */
+.hero-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.intro-text-block p {
-    color: var(--text-soft);
-    line-height: 1.8;
-    margin: 0 0 14px;
-}
-/* ===== TRAYECTORIA FIX ===== */
-.timeline-title {
-    font-size: 1.05rem;
-    margin-bottom: 16px;
-    color: #BCD8FF;
-    font-family: 'Saira Stencil One', sans-serif;
-    letter-spacing: 0.03em;
-}
-
-.timeline-item {
-    padding: 22px 24px;
-    margin-bottom: 16px;
-}
-
-.timeline-item-logo {
+.hero-top {
     display: grid;
-    grid-template-columns: 88px 1fr;
+    grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
     align-items: center;
-    gap: 18px;
+    gap: 40px;
 }
 
-.timeline-logo {
-    width: 78px;
-    max-width: 78px;
-    height: 78px;
-    object-fit: contain;
-    justify-self: center;
+.hero-logo-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 }
 
-.timeline-item h3 {
-    margin: 0 0 8px;
-    font-size: 1.06rem;
-    line-height: 1.25;
+.hero-photo-side {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
-.timeline-item p {
-    margin: 0;
+.hero-logo-main {
+    width: min(700px, 100%);
 }
 
-.cert-list {
-    margin-top: 4px;
-    padding-left: 18px;
+.hero-photo-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 1 / 1.25;
+    display: grid;
+    place-items: center;
 }
 
-@media (max-width: 680px) {
-    .timeline-item-logo {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .timeline-logo {
-        margin-bottom: 8px;
-    }
+.hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 48% 48% 46% 46% / 38% 38% 58% 58%;
+    border: 3px solid rgba(255,255,255,.08);
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
 }
-/* ===== MENTORÍA ===== */
+
+/* TITULOS */
+.hero-title-stencil {
+    font-family: 'Saira Stencil One', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 5.2rem);
+    line-height: 1.02;
+    max-width: 1100px;
+    margin-bottom: 18px;
+    letter-spacing: 0.01em;
+}
+
+.hero-subtitle {
+    font-size: 24px;
+    line-height: 1.4;
+    max-width: 1100px;
+    color: #dbeafe;
+    margin-bottom: 20px;
+}
+
+/* MENTORIA */
 .section-head-flex {
     display: grid;
     grid-template-columns: minmax(0, 1.25fr) minmax(260px, 360px);
@@ -935,7 +798,7 @@ nav a {
     display: block;
 }
 
-/* ===== TEXTO ANCHO EN SECCIONES ===== */
+/* TEXTOS ANCHOS */
 .section-head p,
 .card p,
 .case-body p,
@@ -946,7 +809,7 @@ nav a {
     max-width: 100%;
 }
 
-/* ===== INTRO TRAYECTORIA ===== */
+/* TRAYECTORIA */
 .intro-text-block {
     width: 100%;
     max-width: 1100px;
@@ -959,7 +822,6 @@ nav a {
     margin: 0 0 14px;
 }
 
-/* ===== TRAYECTORIA PROFESIONAL / FORMACIÓN ===== */
 .timeline-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1016,18 +878,55 @@ nav a {
     margin-bottom: 6px;
 }
 
+/* RESPONSIVE */
 @media (max-width: 980px) {
+    .hero-top,
     .section-head-flex,
-    .timeline-grid {
+    .timeline-grid,
+    .contact-grid,
+    .feature-grid,
+    .demo-steps {
         grid-template-columns: 1fr;
+    }
+
+    .hero-logo-side,
+    .hero-photo-side {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 
     .section-head-visual {
         justify-content: flex-start;
     }
+
+    nav {
+        display: none;
+    }
+
+    .hero-logo-main {
+        width: min(560px, 100%);
+    }
+
+    .hero-photo-wrap {
+        max-width: 280px;
+    }
 }
 
 @media (max-width: 680px) {
+    .cards-grid-5,
+    .cases-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .brand-logo {
+        width: 220px;
+    }
+
     .timeline-item-logo {
         grid-template-columns: 1fr;
         text-align: center;
