@@ -33,10 +33,11 @@ def home():
     fig_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder) if False else fig.to_json()
 
     servicios = [
-        "Monitoreo de cargas y microciclos",
-        "Implementación y lectura de GPS",
-        "Dashboards deportivos personalizados",
+        "Monitoreo de Cargas y Microciclos",
+        "Implementación y Lectura de GPS",
+        "Dashboards Deportivos Personalizados",
         "Análisis de rendimiento y toma de decisiones"
+        "Intorudcción y Aplicación de Power Bi"
     ]
 
     proyectos = [
