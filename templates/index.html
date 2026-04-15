@@ -37,13 +37,13 @@
         <section class="hero">
             <div class="container hero-layout">
 
-                <div class="hero-head">
-                    <div class="hero-head-left">
+                <div class="hero-top">
+                    <div class="hero-logo-side">
                         <div class="hero-kicker">MENTORÍAS 1:1 · GPS · PERFORMANCE · DATA INTELLIGENCE</div>
                         <img src="{{ url_for('static', filename='img/logo-sv.png') }}" alt="SV Sports Scientist" class="hero-logo-main">
                     </div>
 
-                    <div class="hero-head-right">
+                    <div class="hero-head-side">
                         <div class="hero-photo-wrap">
                             <div class="hero-photo-glow"></div>
                             <img src="{{ url_for('static', filename='img/seba-hero.png') }}" alt="Sebastián Villalba" class="hero-photo">
@@ -100,7 +100,9 @@
                     </div>
 
                     <div class="section-head-visual">
-                        <img src="{{ url_for('static', filename='img/mentoria-dashboard.png') }}" alt="Dashboard mentoría" class="mentoria-head-img">
+                        <video class="pbi" autoplay muted loop playsinline>
+							<source src="{{ url_for('static', filename='pbi.mp4') }}" type="video/mp4">
+						</video>
                     </div>
                 </div>
 
@@ -188,6 +190,16 @@
                     <span class="eyebrow">Trayectoria</span>
                     <h2>Experiencia profesional y formación</h2>
                 </div>
+			<div class="intro-text-block">
+				<p>
+					Mi recorrido combina experiencia práctica en deportes profesionales de equipo con una formación sólida en ciencias del deporte, big data y análisis aplicado al rendimiento. Eso me permite moverme con naturalidad entre el campo, el gimnasio, el GPS y la lectura estratégica de la información.
+				</p>
+				<p>
+					Mi diferencial está en unir dos mundos que muchas veces aparecen separados: la realidad diaria del staff y el análisis de datos con criterio. No trabajo para mostrar números, sino para convertirlos en decisiones claras, útiles y aplicables, con impacto real en el rendimiento y en la comunicación dentro de un equipo profesional.
+				</p>
+			</div>
+
+<div class="timeline-grid">
 
                 <div class="timeline-grid">
 
