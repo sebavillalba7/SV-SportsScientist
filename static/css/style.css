@@ -115,6 +115,10 @@ nav a {
     gap: 24px;
 }
 
+.hero-layout {
+    display: block;
+}
+
 .hero-top {
     display: grid;
     grid-template-columns: 1.25fr 0.75fr;
@@ -303,26 +307,35 @@ nav a {
 }
 
 .hero-top {
-    display: grid;
-    grid-template-columns: 1.25fr 0.75fr;
-    gap: 28px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    gap: 40px;
 }
 
 .hero-logo-side {
+    flex: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .hero-photo-side {
+    flex: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end;
 }
 
 .hero-bottom {
     display: block;
+}
+
+.hero-logo-main {
+    max-width: 600px;
+    width: 100%;
+}
+
+.hero-photo-wrap {
+    max-width: 320px;
 }
 
 .hero-title-stencil,
