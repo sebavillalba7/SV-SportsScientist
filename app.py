@@ -228,9 +228,18 @@ def home():
     ]
 
     proyectos = [
-        {"titulo": "Dashboard de cargas", "descripcion": "Visualización interactiva para interpretar carga externa por jugador, posición y microciclo."},
-        {"titulo": "Riesgo y disponibilidad", "descripcion": "Integración de carga, wellness, lesiones y evaluaciones para mejorar el seguimiento del plantel."},
-        {"titulo": "Consultoría aplicada", "descripcion": "Procesos, reportes y flujos de trabajo para cuerpos técnicos y áreas de rendimiento."}
+        {
+            "titulo": "Dashboard de cargas",
+            "descripcion": "Visualización interactiva para interpretar carga externa por jugador, posición y microciclo."
+        },
+        {
+            "titulo": "Riesgo y disponibilidad",
+            "descripcion": "Integración de carga, wellness, lesiones y evaluaciones para mejorar el seguimiento del plantel."
+        },
+        {
+            "titulo": "Consultoría aplicada",
+            "descripcion": "Procesos, reportes y flujos de trabajo para cuerpos técnicos y áreas de rendimiento."
+        }
     ]
 
     upload_error = None
@@ -239,6 +248,7 @@ def home():
     suggestions = {}
     demo_payload = None
 
+    # Cada vez que se abre la home "desde cero", arrancamos limpio
     if request.method == "GET":
         clear_uploaded_session()
         upload_stage = "upload"
@@ -249,9 +259,16 @@ def home():
     if request.method == "POST":
         action = request.form.get("action", "")
 
+        if action == "clear_file":
+            clear_uploaded_session()
+            upload_stage = "upload"
+            columns = []
+            suggestions = {}
+            demo_payload = None
 
         elif action == "upload_file":
             file = request.files.get("demo_file")
+
             if not file or file.filename == "":
                 upload_error = "Subí un CSV o Excel para continuar."
                 upload_stage = "upload"
@@ -259,8 +276,10 @@ def home():
                 try:
                     df, temp_path = load_uploaded_file(file)
                     df = normalize_dataframe(df)
+
                     saved_path = UPLOAD_DIR / f"{uuid.uuid4().hex}.csv"
                     df.to_csv(saved_path, index=False)
+
                     try:
                         temp_path.unlink(missing_ok=True)
                     except Exception:
@@ -268,15 +287,18 @@ def home():
 
                     session["uploaded_csv_path"] = str(saved_path)
                     session["upload_stage"] = "mapping"
+
                     upload_stage = "mapping"
                     columns = list(df.columns)
                     suggestions = build_mapping_suggestions(columns)
+
                 except Exception as e:
                     upload_error = f"No pude leer el archivo: {e}"
                     upload_stage = "upload"
 
         elif action == "build_demo":
             csv_path = session.get("uploaded_csv_path")
+
             if not csv_path or not Path(csv_path).exists():
                 upload_error = "No encontré el archivo cargado. Volvé a subirlo."
                 upload_stage = "upload"
@@ -295,8 +317,19 @@ def home():
                     "mtsmin_col": request.form.get("mtsmin_col", "")
                 }
 
-                required = ["player_col", "micro_col", "pos_col", "totdist_col", "hsd_col", "decel_col", "mtsmin_col", "minutes_col"]
+                required = [
+                    "player_col",
+                    "micro_col",
+                    "pos_col",
+                    "totdist_col",
+                    "hsd_col",
+                    "decel_col",
+                    "mtsmin_col",
+                    "minutes_col"
+                ]
+
                 missing = [k for k in required if not mapping.get(k)]
+
                 if missing:
                     upload_error = "Completá todos los mapeos de columnas para construir el demo."
                     upload_stage = "mapping"
@@ -311,6 +344,7 @@ def home():
 
     if upload_stage in ["mapping", "dashboard"] and not columns:
         csv_path = session.get("uploaded_csv_path")
+
         if csv_path and Path(csv_path).exists():
             df = pd.read_csv(csv_path)
             df = normalize_dataframe(df)
