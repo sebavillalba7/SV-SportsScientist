@@ -105,11 +105,11 @@ def guess_column(columns, keywords):
 def build_mapping_suggestions(columns):
     return {
         "player_col": guess_column(columns, ["JUGADOR", "PLAYER", "ATHLETE", "NAME"]),
-        "micro_col": guess_column(columns, ["MICROCICLO", "MICRO", "WEEK", "SEMANA"]),
         "pos_col": guess_column(columns, ["POS", "POSITION", "PUESTO"]),
         "minutes_col": guess_column(columns, ["MIN", "MINUTOS", "MINUTES"]),
         "totdist_col": guess_column(columns, ["TOT DIST", "DISTANCIA TOTAL", "TOTAL DIST", "DIST"]),
-        "hsd_col": guess_column(columns, ["MTS>19", "HSD", ">19", "HIGH SPEED"]),
+        "hsd_col": guess_column(columns, ["MTS>19", "HSD", ">19", "HIGH SPEED", "HSR"]),
+        "sp_col": guess_column(columns, ["SPRINT", "SPR", ">24", "SPD", ">25"]),
         "decel_col": guess_column(columns, ["DES", "DECEL", "DEACC", "DESAC"]),
         "mtsmin_col": guess_column(columns, ["MTS/MIN", "DIST/MIN", "M/MIN"])
     }
@@ -153,7 +153,6 @@ def classify_status(value, mean, std):
 
 def build_demo_payload(df, mapping):
     player_col = mapping["player_col"]
-    micro_col = mapping["micro_col"]
     pos_col = mapping["pos_col"]
 
     semaforo_options = [
@@ -169,7 +168,7 @@ def build_demo_payload(df, mapping):
         "size": mapping["minutes_col"]
     }
 
-    needed = [player_col, micro_col, pos_col] + semaforo_options + [scatter_defaults["x"], scatter_defaults["y"], scatter_defaults["size"]]
+    needed = [player_col,pos_col] + semaforo_options + [scatter_defaults["x"], scatter_defaults["y"], scatter_defaults["size"]]
     needed = [c for c in needed if c and c in df.columns]
     demo_df = df[needed].copy()
 
@@ -193,7 +192,6 @@ def build_demo_payload(df, mapping):
         "columns": list(df.columns),
         "mapping": mapping,
         "filters": {
-            "micro_values": sorted([str(v) for v in df[micro_col].dropna().unique().tolist()]) if micro_col in df.columns else [],
             "pos_values": sorted([str(v) for v in df[pos_col].dropna().unique().tolist()]) if pos_col in df.columns else []
         },
         "defaults": {
@@ -308,22 +306,20 @@ def home():
 
                 mapping = {
                     "player_col": request.form.get("player_col", ""),
-                    "micro_col": request.form.get("micro_col", ""),
                     "pos_col": request.form.get("pos_col", ""),
                     "minutes_col": request.form.get("minutes_col", ""),
                     "totdist_col": request.form.get("totdist_col", ""),
                     "hsd_col": request.form.get("hsd_col", ""),
+                    "sp_col": request.form.get("sp_col", ""),
                     "decel_col": request.form.get("decel_col", ""),
                     "mtsmin_col": request.form.get("mtsmin_col", "")
                 }
 
                 required = [
                     "player_col",
-                    "micro_col",
                     "pos_col",
                     "totdist_col",
                     "hsd_col",
-                    "decel_col",
                     "mtsmin_col",
                     "minutes_col"
                 ]

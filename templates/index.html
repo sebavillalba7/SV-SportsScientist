@@ -420,15 +420,6 @@
 							</select>
 						</label>
 
-						<label>Microciclo
-							<select name="micro_col" required>
-								<option value="">Seleccionar</option>
-								{% for c in upload_columns %}
-								<option value="{{ c }}" {% if mapping_suggestions.micro_col == c %}selected{% endif %}>{{ c }}</option>
-								{% endfor %}
-							</select>
-						</label>
-
 						<label>Posición
 							<select name="pos_col" required>
 								<option value="">Seleccionar</option>
@@ -466,7 +457,7 @@
 						</label>
 
 						<label>Desaceleraciones
-							<select name="decel_col" required>
+							<select name="decel_col">
 								<option value="">Seleccionar</option>
 								{% for c in upload_columns %}
 								<option value="{{ c }}" {% if mapping_suggestions.decel_col == c %}selected{% endif %}>{{ c }}</option>
@@ -483,12 +474,19 @@
 							</select>
 						</label>
 
-						<div class="mapping-actions">
-							<button type="submit" class="btn btn-secondary"
-									onclick="document.getElementById('demo-action').value='clear_file'">
-									LIMPIAR ARCHIVO Y SUBIR OTRO
+						 <div class="mapping-actions">
+							<button type="submit" class="btn btn-primary">
+								LISTO, CONSTRUIR DEMO
 							</button>
 						</div>
+					</form>
+
+					<!-- FORMULARIO SEPARADO PARA LIMPIAR -->
+					<form method="POST" class="mapping-actions">
+						<input type="hidden" name="action" value="clear_file">
+						<button type="submit" class="btn btn-secondary">
+							LIMPIAR ARCHIVO Y SUBIR OTRO
+						</button>
 					</form>
 				</div>
 				{% endif %}
@@ -507,10 +505,6 @@
 					</form>
 
 					<div class="demo-toolbar">
-						<label>Microciclo
-							<select id="filter-micro"></select>
-						</label>
-
 						<label>Posición
 							<select id="filter-pos"></select>
 						</label>
@@ -566,7 +560,6 @@
 					const mapping = payload.mapping;
 					const defaults = payload.defaults;
 
-					const filterMicro = document.getElementById("filter-micro");
 					const filterPos = document.getElementById("filter-pos");
 					const sem1 = document.getElementById("sem1");
 					const sem2 = document.getElementById("sem2");
@@ -592,7 +585,6 @@
 						});
 					}
 
-					fillSelect(filterMicro, payload.filters.micro_values, payload.filters.micro_values[0], true);
 					fillSelect(filterPos, payload.filters.pos_values, payload.filters.pos_values[0], true);
 					fillSelect(sem1, cols, defaults.semaforo[0] || "", false);
 					fillSelect(sem2, cols, defaults.semaforo[1] || "", false);
@@ -648,7 +640,6 @@
 					}
 
 					function update() {
-						const microVal = filterMicro.value;
 						const posVal = filterPos.value;
 						const sCols = [sem1.value, sem2.value, sem3.value];
 						const xCol = scatterX.value;
@@ -656,9 +647,8 @@
 						const sizeCol = scatterSize.value;
 
 						let filtered = records.filter(r => {
-							const okMicro = microVal === "__all__" || String(r[mapping.micro_col]) === microVal;
 							const okPos = posVal === "__all__" || String(r[mapping.pos_col]) === posVal;
-							return okMicro && okPos;
+							return okPos;
 						});
 
 						const grouped = {};
@@ -720,12 +710,11 @@
 						const yellows = players.filter(p => p.global === "amarillo").length;
 						interpretation.innerHTML = `
 							<strong>Lectura automática.</strong>
-							En el microciclo <strong>${microVal === "__all__" ? "seleccionado" : microVal}</strong>
-							y para la posición <strong>${posVal === "__all__" ? "seleccionada" : posVal}</strong>,
+							Para la posición <strong>${posVal === "__all__" ? "seleccionada" : posVal}</strong>,
 							se detectan <strong>${reds}</strong> jugadores en rojo y <strong>${yellows}</strong> en amarillo.
 							El scatter ubica el perfil del grupo según <strong>${xCol}</strong> en X, <strong>${yCol}</strong> en Y
-							y tamaño por <strong>${sizeCol}</strong>, ayudando a identificar perfiles de exigencia y exposición.
-						`;
+							y tamaño por <strong>${sizeCol}</strong>, ayudando a identificar perfiles de exigencia y exposición en la sesión total.
+							`;
 
 						const trace = {
 							x: players.map(p => p[xCol]),
@@ -758,7 +747,7 @@
 						Plotly.newPlot('scatter-chart', [trace], layout, {responsive: true});
 					}
 
-					[filterMicro, filterPos, sem1, sem2, sem3, scatterX, scatterY, scatterSize].forEach(el => {
+					[filterPos, sem1, sem2, sem3, scatterX, scatterY, scatterSize].forEach(el => {
 						el.addEventListener("change", update);
 					});
 
