@@ -239,15 +239,15 @@ def home():
     suggestions = {}
     demo_payload = None
 
+    if request.method == "GET":
+        clear_uploaded_session()
+        upload_stage = "upload"
+        columns = []
+        suggestions = {}
+        demo_payload = None
+
     if request.method == "POST":
         action = request.form.get("action", "")
-        
-        if action == "clear_file":
-            clear_uploaded_session()
-            upload_stage = "upload"
-            columns = []
-            suggestions = {}
-            demo_payload = None
 
 
         elif action == "upload_file":
