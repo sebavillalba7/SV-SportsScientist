@@ -203,6 +203,16 @@ def build_demo_payload(df, mapping):
             "scatter_size": scatter_defaults["size"]
         }
     }
+def clear_uploaded_session():
+    csv_path = session.get("uploaded_csv_path")
+    if csv_path:
+        try:
+            Path(csv_path).unlink(missing_ok=True)
+        except Exception:
+            pass
+
+    session.pop("uploaded_csv_path", None)
+    session["upload_stage"] = "upload"
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -231,8 +241,16 @@ def home():
 
     if request.method == "POST":
         action = request.form.get("action", "")
+        
+        if action == "clear_file":
+            clear_uploaded_session()
+            upload_stage = "upload"
+            columns = []
+            suggestions = {}
+            demo_payload = None
 
-        if action == "upload_file":
+
+        elif action == "upload_file":
             file = request.files.get("demo_file")
             if not file or file.filename == "":
                 upload_error = "Subí un CSV o Excel para continuar."

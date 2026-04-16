@@ -409,7 +409,7 @@
 					{% endif %}
 
 					<form method="POST" class="mapping-grid">
-						<input type="hidden" name="action" value="build_demo">
+						<input type="hidden" name="action" value="build_demo" id="demo-action">
 
 						<label>Jugador
 							<select name="player_col" required>
@@ -484,7 +484,10 @@
 						</label>
 
 						<div class="mapping-actions">
-							<button type="submit" class="btn btn-primary">CONSTRUIR DEMO</button>
+							<button type="submit" class="btn btn-secondary"
+									onclick="document.getElementById('demo-action').value='clear_file'">
+									LIMPIAR ARCHIVO Y SUBIR OTRO
+							</button>
 						</div>
 					</form>
 				</div>
@@ -498,6 +501,10 @@
 					<div id="dynamic-demo"
 						 data-payload='{{ demo_payload | safe }}'>
 					</div>
+					<form method="POST" class="reset-demo-form">
+						<input type="hidden" name="action" value="clear_file">
+						<button type="submit" class="btn btn-secondary">CARGAR OTRO ARCHIVO</button>
+					</form>
 
 					<div class="demo-toolbar">
 						<label>Microciclo

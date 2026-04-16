@@ -1055,3 +1055,11 @@ nav a {
         grid-template-columns: 1fr;
     }
 }
+.mapping-actions-double,
+.reset-demo-form {
+    margin-top: 14px;
+}
+
+.reset-demo-form {
+    margin-bottom: 18px;
+}
