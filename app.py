@@ -36,7 +36,9 @@ BRAND = {
 def clean_columns(columns):
     cleaned = []
     for c in columns:
-        c = str(c).strip()
+        c = str(c)
+        c = c.replace("\ufeff", "")   # elimina BOM oculto
+        c = c.strip()
         c = re.sub(r"\s+", " ", c)
         cleaned.append(c)
     return cleaned
@@ -154,19 +156,42 @@ def classify_status(value, mean, std):
 def build_demo_payload(df, mapping):
     player_col = mapping["player_col"]
     pos_col = mapping["pos_col"]
+    
+    # limpieza extra por seguridad
+    df = df.copy()
+    df.columns = clean_columns(df.columns)
+    player_col = player_col.replace("\ufeff", "").strip()
+    pos_col = pos_col.replace("\ufeff", "").strip()  
 
     semaforo_options = [
         mapping["totdist_col"],
         mapping["hsd_col"],
         mapping["decel_col"]
     ]
-    semaforo_options = [c for c in semaforo_options if c]
+    semaforo_options = [c.replace("\ufeff", "").strip() for c in semaforo_options if c]
 
     scatter_defaults = {
-        "x": mapping["hsd_col"],
-        "y": mapping["mtsmin_col"],
-        "size": mapping["minutes_col"]
+        "x": mapping.get("hsd_col", "").replace("\ufeff", "").strip(),
+        "y": mapping.get("mtsmin_col", "").replace("\ufeff", "").strip(),
+        "size": mapping.get("minutes_col", "").replace("\ufeff", "").strip()
     }
+    
+    return {
+        "records": df.to_dict(orient="records"),
+        "columns": list(df.columns),
+        "mapping": mapping,
+        "filters": {
+            "pos_values": sorted([str(v) for v in df[pos_col].dropna().unique().tolist()]) if pos_col in df.columns else []
+        },
+        "defaults": {
+            "semaforo": semaforo_options[:3],
+            "scatter_x": scatter_defaults["x"],
+            "scatter_y": scatter_defaults["y"],
+            "scatter_size": scatter_defaults["size"]
+        }
+    }
+    
+    
 
     needed = [player_col,pos_col] + semaforo_options + [scatter_defaults["x"], scatter_defaults["y"], scatter_defaults["size"]]
     needed = [c for c in needed if c and c in df.columns]
@@ -321,6 +346,8 @@ def home():
                     "mtsmin_col": request.form.get("mtsmin_col", "")
                 }
                 
+                mapping = {k: v.replace("\ufeff", "").strip() if isinstance(v, str) else v for k, v in mapping.items()}
+                
                 print("Mapping recibido:", mapping)
                 print("CSV path:", csv_path)
 
@@ -356,6 +383,7 @@ def home():
         if csv_path and Path(csv_path).exists():
             df = pd.read_csv(csv_path)
             df = normalize_dataframe(df)
+            df.columns = clean_columns(df.columns)
             columns = list(df.columns)
             suggestions = build_mapping_suggestions(columns)
 
