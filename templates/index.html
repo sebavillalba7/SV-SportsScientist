@@ -311,64 +311,89 @@
             </div>
         </section>
 
-        <section id="casos" class="section alt">
-            <div class="container">
-                <div class="section-head">
-                    <span class="eyebrow">Casos</span>
-                    <h2>Casos de éxito</h2>
-                    <p>
-                        Acá podés mostrar experiencias, resultados y procesos de trabajo con entrenadores, analistas o clubes. Por ahora te lo dejo con ejemplos para reemplazar.
-                    </p>
-                </div>
+        <section id="historias-exito" class="section">
+			<div class="container">
+				<div class="section-head">
+					<span class="eyebrow">Historias de éxito</span>
+					<h2>Profesionales que transformaron sus datos en decisiones</h2>
+					<p>
+						Cada proceso es distinto, pero todos comparten algo: pasar de mirar datos aislados
+						a construir criterios claros, aplicables y útiles para el día a día profesional.
+					</p>
+				</div>
 
-                <div class="cases-grid">
-                    <article class="case-card">
-                        <img src="{{ url_for('static', filename='img/caso-1.jpg') }}" alt="Caso 1">
-                        <div class="case-body">
-                            <span class="case-tag">Analista de rendimiento</span>
-                            <h3>De reportes descriptivos a decisiones con criterio</h3>
-                            <p>Un profesional que ya registraba datos, pero no lograba convertirlos en información realmente útil para el staff. Se trabajó lectura contextual y comunicación.</p>
-                        </div>
-                    </article>
+				<div class="success-carousel-wrap">
+					<div class="success-carousel" id="successCarousel">
 
-                    <article class="case-card">
-                        <img src="{{ url_for('static', filename='img/caso-2.jpg') }}" alt="Caso 2">
-                        <div class="case-body">
-                            <span class="case-tag">Preparador físico</span>
-                            <h3>Implementación de GPS con foco práctico</h3>
-                            <p>Se ordenó el uso del GPS, se definieron métricas útiles por objetivo del día y se construyó una lógica de toma de decisiones alineada al modelo de juego.</p>
-                        </div>
-                    </article>
+						<article class="success-card">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF Rugby</span>
+								</div>
+								<h3>Facundo Camale <span class="success-flag">🇪🇸</span></h3>
+								<p class="success-role">Belenos BC</p>
+							</div>
+							<p class="success-text">
+								“Yo ya venía registrando datos, pero no tenía claro cómo ordenarlos ni cómo transformar esa información en algo realmente útil. Con la mentoría mejoré mi conocimiento técnico sobre GPS y pude organizar mejor mis procesos para empezar a construir mis propias bases de datos con más criterio.”
+							</p>
+						</article>
 
-                    <article class="case-card">
-                        <img src="{{ url_for('static', filename='img/caso-3.jpg') }}" alt="Caso 3">
-                        <div class="case-body">
-                            <span class="case-tag">Club profesional</span>
-                            <h3>Dashboard para cuerpo técnico</h3>
-                            <p>Se pasó de hojas dispersas a una visualización clara en Power BI, permitiendo decisiones más rápidas por jugador, puesto, sesión y microciclo.</p>
-                        </div>
-                    </article>
+						<article class="success-card">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF</span>
+								</div>
+								<h3>Bruno Tartaglia <span class="success-flag">🇦🇷</span></h3>
+								<p class="success-role">Entrenamiento</p>
+							</div>
+							<p class="success-text">
+								“La mentoría me ayudó a incorporar conocimientos mucho más claros sobre la lectura e interpretación de los datos aplicados al fútbol. Lo más valioso fue trabajarlo con casos prácticos y reales, porque eso me permitió entender mejor cómo llevarlo a mi día a día.”
+							</p>
+						</article>
 
-                    <article class="case-card">
-                        <img src="{{ url_for('static', filename='img/caso-4.jpg') }}" alt="Caso 4">
-                        <div class="case-body">
-                            <span class="case-tag">Mentoría 1:1</span>
-                            <h3>Más seguridad frente al staff</h3>
-                            <p>Se trabajó criterio, lenguaje y estructura de informes para que el profesional pudiera sostener sus decisiones con más claridad y respaldo.</p>
-                        </div>
-                    </article>
+						<article class="success-card">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF</span>
+								</div>
+								<h3>Andrés Sánchez <span class="success-flag">🇦🇷</span></h3>
+								<p class="success-role">Unión SF Juveniles</p>
+							</div>
+							<p class="success-text">
+								“Yo ya tenía conocimientos previos en GPS, pero la mentoría me permitió mejorar mucho la interpretación y el uso de los datos. Hoy los aplico con más sentido en la planificación y en el control de tareas, entendiendo mejor qué mirar y para qué.”
+							</p>
+						</article>
 
-                    <article class="case-card">
-                        <img src="{{ url_for('static', filename='img/caso-5.jpg') }}" alt="Caso 5">
-                        <div class="case-body">
-                            <span class="case-tag">Alto rendimiento</span>
-                            <h3>Lectura integral del rendimiento</h3>
-                            <p>Se integraron datos de carga, evaluaciones físicas y contexto competitivo para construir una mirada más completa y más útil para el proceso.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
+						<article class="success-card">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF</span>
+								</div>
+								<h3>Jesús Vallejos <span class="success-flag">🇨🇴</span></h3>
+								<p class="success-role">PF Olancho FC · Honduras</p>
+							</div>
+							<p class="success-text">
+								“A pesar de mi trayectoria como preparador físico en el fútbol, sentía que necesitaba mejores herramientas para ordenar la información y tomar decisiones con más respaldo. La mentoría me dio recursos concretos para ganar seguridad y transmitir más confianza dentro del staff.”
+							</p>
+						</article>
+
+						<article class="success-card">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF</span>
+								</div>
+								<h3>Ramiro Martínez <span class="success-flag">🇺🇾</span></h3>
+								<p class="success-role">Nacional MVD</p>
+							</div>
+							<p class="success-text">
+								“A partir de lo aprendido, pude construir una base de datos mucho más sólida y desarrollar mis primeros reportes en Power BI con información real y aplicable. Eso me ayudó a dar un paso importante en la organización y presentación de mis datos.”
+							</p>
+						</article>
+
+					</div>
+				</div>
+			</div>
+		</section>
 
 
 		<!-- REEMPLAZÁ SOLO LA SECCIÓN id="dashboard" POR ESTE BLOQUE -->
@@ -870,5 +895,69 @@
         const figure = {{ fig_json | safe }};
         Plotly.newPlot("chart", figure.data, figure.layout, {responsive: true});
     </script>
+	
+	<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const carousel = document.getElementById("successCarousel");
+		if (!carousel) return;
+
+		const cards = carousel.querySelectorAll(".success-card");
+		if (!cards.length) return;
+
+		let currentIndex = 0;
+		let autoScroll;
+		let isPaused = false;
+
+		function getStepSize() {
+			const firstCard = cards[0];
+			const gap = 24;
+			return firstCard.offsetWidth + gap;
+		}
+
+		function scrollToCard(index) {
+			const step = getStepSize();
+			carousel.scrollTo({
+				left: index * step,
+				behavior: "smooth"
+			});
+		}
+
+		function startAutoScroll() {
+			autoScroll = setInterval(() => {
+				if (isPaused) return;
+
+				currentIndex++;
+
+				if (currentIndex >= cards.length) {
+					currentIndex = 0;
+				}
+
+				scrollToCard(currentIndex);
+			}, 4500);
+		}
+
+		carousel.addEventListener("mouseenter", () => {
+			isPaused = true;
+		});
+
+		carousel.addEventListener("mouseleave", () => {
+			isPaused = false;
+		});
+
+		carousel.addEventListener("touchstart", () => {
+			isPaused = true;
+		});
+
+		carousel.addEventListener("touchend", () => {
+			setTimeout(() => {
+				isPaused = false;
+			}, 2500);
+		});
+
+		startAutoScroll();
+	});
+	
+	</script>
+
 </body>
 </html>
