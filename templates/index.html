@@ -642,31 +642,29 @@
 						const yellows = statuses.filter(s => s === "amarillo").length;
 						const greens = statuses.filter(s => s === "verde").length;
 
+						// Casos críticos
 						if (reds >= 2) {
-							const options = [
-								"Perfil exigente. Conviene revisar la carga acumulada y valorar ajuste individual.",
-								"Revisar variables de intensidad en los ultimos 3,5 y 7 dias.",
-								"Se recomienda seguimiento más fino, incluyendo otras variables."
-							];
-							return options[Math.floor(Math.random() * options.length)];
+							return "Perfil exigente respecto al grupo. Conviene revisar la carga acumulada y valorar un ajuste individual; contemplar ultimos 7 dias.";
 						}
 
+						// Casos mixtos con una alerta clara
+						if (reds === 1 && yellows >= 1) {
+							return "Se detectan desvíos relevantes en más de una métrica. Recomendable profundizar el seguimiento y sumar contexto de la sesión; contemplar ultimos 7 dias.";
+						}
+
+						// Casos intermedios
 						if (reds === 1 || yellows >= 2) {
-							const options = [
-								"Comportamiento intermedio. Monitorear el estímulo y su consistencia en los ultimos 7 dias.",
-								"Se observan señales mixtas respecto al grupo. Puede requerir seguimiento en próximas sesiones.",
-								"Perfil con algunos desvíos moderados, no descartes revisar otras variables."
-							];
-							return options[Math.floor(Math.random() * options.length)];
+							return "Comportamiento intermedio respecto al grupo. Vale la pena monitorear la evolución del estímulo y su consistencia en próximas sesiones; revisar los ultimos 3,5 y 7 dias.";
 						}
 
-						if (greens >= 2) {
-							const options = [
-								"Perfil estable dentro del grupo filtrado. El jugador se mantiene en una zona esperada.",
-								"Comportamiento consistente con la referencia del grupo. Buena estabilidad en la sesión para las metricas seleccionadas",
-								"Se recomienda revisar otras variables."
-							];
-							return options[Math.floor(Math.random() * options.length)];
+						// Casos estables pero con un matiz
+						if (greens >= 2 && yellows === 1) {
+							return "Perfil mayormente estable, aunque una de las métricas se aleja del grupo. Puede ser útil revisar el contexto individual y otras variables.";
+						}
+
+						// Casos totalmente estables
+						if (greens === 3) {
+							return "Perfil estable dentro del grupo filtrado. El jugador se mantiene en una zona esperada para las métricas seleccionadas.";
 						}
 
 						return "Lectura disponible, aunque con información parcial para una conclusión más firme.";
