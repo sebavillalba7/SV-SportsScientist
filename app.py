@@ -272,8 +272,14 @@ def home():
                 upload_stage = "upload"
             else:
                 try:
+                    print("Archivo recibido:", file.filename)
+                    print("Extension:", Path(file.filename).suffix.lower())
+                    
                     df, temp_path = load_uploaded_file(file)
                     df = normalize_dataframe(df)
+                    
+                    print("Columnas detectadas:", df.columns.tolist())
+                    print("Shape:", df.shape)
 
                     saved_path = UPLOAD_DIR / f"{uuid.uuid4().hex}.csv"
                     df.to_csv(saved_path, index=False)
@@ -314,6 +320,9 @@ def home():
                     "decel_col": request.form.get("decel_col", ""),
                     "mtsmin_col": request.form.get("mtsmin_col", "")
                 }
+                
+                print("Mapping recibido:", mapping)
+                print("CSV path:", csv_path)
 
                 required = [
                     "player_col",
@@ -337,6 +346,9 @@ def home():
                     upload_stage = "dashboard"
                     columns = list(df.columns)
                     suggestions = mapping
+                    
+            print("Mapping recibido:", mapping)
+            print("CSV path:", csv_path)
 
     if upload_stage in ["mapping", "dashboard"] and not columns:
         csv_path = session.get("uploaded_csv_path")

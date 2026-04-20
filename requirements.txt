@@ -2,9 +2,5 @@ flask
 pandas
 plotly
 gunicorn
-pandas
 openpyxl
 xlrd
-plotly
-flask
-gunicorn
