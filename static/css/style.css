@@ -1211,10 +1211,10 @@ nav a {
         gap: 18px;
     }
 
-    .success-card {
-        flex: 0 0 86%;
-        min-height: auto;
-    }
+.success-card {
+    flex: 0 0 320px;
+    scroll-snap-align: start; /* 👈 PRO */
+}
 
     .success-card h3 {
         font-size: 1.45rem;
@@ -1623,8 +1623,7 @@ section[id] {
 .success-carousel-wrap {
     position: relative;
     width: 100%;
-    overflow: visible;
-    padding: 0 44px; /* deja espacio para flechas */
+    overflow: hidden; /* 👈 importante */
 }
 
 .success-carousel {
@@ -1632,9 +1631,12 @@ section[id] {
     gap: 24px;
     overflow-x: auto;
     scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 6px 0 14px;
+
+    padding: 0 32px; /* 👈 clave para que no corte */
+    
+    scroll-snap-type: x mandatory; /* 👈 PRO */
+    scroll-padding-left: 32px;     /* 👈 PRO */
+    scroll-padding-right: 32px;    /* 👈 PRO */
 }
 
 .success-carousel::-webkit-scrollbar {
