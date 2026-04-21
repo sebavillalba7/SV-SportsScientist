@@ -147,7 +147,7 @@
                         <div>
                             <h4>Qué trabajamos</h4>
                             <ul>
-                                <li>Interpretación práctica del GPS según objetivo del día y momento competitivo.</li>
+                                <li>Interpretación práctica del GPS según objetivos.</li>
                                 <li>Diseño de reportes útiles para cuerpo técnico.</li>
                                 <li>Lectura individual y colectiva de cargas.</li>
 								<li>Introducción a visualizaciones con Power Bi.</li>
@@ -158,10 +158,11 @@
                         <div>
                             <h4>Qué te llevás</h4>
                             <ul>
-                                <li>Más seguridad profesional.</li>
-                                <li>Más criterio para decidir.</li>
-                                <li>Más impacto en tu equipo.</li>
-                                <li>Más valor y mejor posicionamiento laboral.</li>
+                                <li>Más SEGURIDAD profesional.</li>
+                                <li>Más CRITERIO para decidir.</li>
+                                <li>Más IMPACTO real en tu equipo.</li>
+                                <li>Más valor y mejor POSICIONAMIENTO laboral.</li>
+								<li>TU propio TABLERO listo para usar.</li>
                             </ul>
                         </div>
                     </div>
@@ -393,7 +394,7 @@
             </div>
         </section>
 
-        <section id="casos" class="section">
+		<section id="casos" class="section">
 			<div class="container">
 				<div class="section-head">
 					<span class="eyebrow">Historias de éxito</span>
@@ -403,22 +404,11 @@
 						a construir criterios claros, aplicables y útiles para el día a día profesional.
 					</p>
 				</div>
-				
-				<div class="casos-wrapper">
-    
-					<button class="casos-btn left" onclick="scrollCasos(-1)">‹</button>
-					
-					<div class="casos-scroll" id="casosScroll">
-						<!-- tus cards -->
-					</div>
-					
-					<button class="casos-btn right" onclick="scrollCasos(1)">›</button>
-
-				</div>
 
 				<div class="success-carousel-wrap">
-					<div class="success-carousel" id="successCarousel">
+					<button class="success-carousel-btn left" onclick="scrollSuccessCarousel(-1)">‹</button>
 
+					<div class="success-carousel" id="successCarousel">
 						<article class="success-card">
 							<img class="success-photo" src="{{ url_for('static', filename='img/caso-1.jpg') }}" alt="Facundo Camale">
 							<div class="success-card-head">
@@ -434,7 +424,7 @@
 						</article>
 
 						<article class="success-card">
-							 <img class="success-photo" src="{{ url_for('static', filename='img/caso-2.jpg') }}" alt="Bruno Tartaglia">
+							<img class="success-photo" src="{{ url_for('static', filename='img/caso-2.jpg') }}" alt="Bruno Tartaglia">
 							<div class="success-card-head">
 								<div class="success-card-meta">
 									<span class="success-tag">PF - Entrenador</span>
@@ -462,7 +452,7 @@
 						</article>
 
 						<article class="success-card">
-							<img class="success-photo" src="{{ url_for('static', filename='img/caso-4.jpg') }}" alt="Jesús Vallejos">
+							<img class="success-photo" src="{{ url_for('static', filename='img/caso-4.jpg') }}" alt="Jesús Vallejo">
 							<div class="success-card-head">
 								<div class="success-card-meta">
 									<span class="success-tag">PF - Fútbol</span>
@@ -488,8 +478,9 @@
 								“A partir de lo aprendido, pude construir una base de datos mucho más sólida y desarrollar mis primeros reportes en Power BI con información real y aplicable. Eso me ayudó a dar un paso importante en la organización y presentación de mis datos.”
 							</p>
 						</article>
-
 					</div>
+
+					<button class="success-carousel-btn right" onclick="scrollSuccessCarousel(1)">›</button>
 				</div>
 			</div>
 		</section>
@@ -1102,8 +1093,10 @@
 	});
 	</script>
 	<script>
-	function scrollCasos(direction) {
-		const container = document.getElementById("casosScroll");
+	function scrollSuccessCarousel(direction) {
+		const container = document.getElementById("successCarousel");
+		if (!container) return;
+
 		const scrollAmount = container.clientWidth * 0.8;
 
 		container.scrollBy({
