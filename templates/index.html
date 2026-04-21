@@ -91,6 +91,32 @@
 
             </div>
         </section>
+		
+		<section class="section stats-section">
+			<div class="container">
+				<div class="stats-grid">
+					<div class="stat-item">
+						<div class="stat-number" data-target="300">0</div>
+						<div class="stat-label">Deportistas entrenados</div>
+					</div>
+
+					<div class="stat-item">
+						<div class="stat-number" data-target="16">0</div>
+						<div class="stat-label">Años de experiencia</div>
+					</div>
+
+					<div class="stat-item">
+						<div class="stat-number" data-target="10">0</div>
+						<div class="stat-label">Años como Sports Scientist</div>
+					</div>
+
+					<div class="stat-item">
+						<div class="stat-number" data-target="5">0</div>
+						<div class="stat-label">Deportes nivel élite</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
         <section id="mentoria" class="section">
             <div class="container">
@@ -194,7 +220,7 @@
 						<div class="flip-card-front">
 							<img src="{{ url_for('static', filename='img/card-tecnologia.png') }}">
 							<h3>IMPLEMENTACIÓN A MEDIDA</h3>
-							<p>Tecnología con Criterio</p>
+							<p>Tecnología con CRITERIO</p>
 						</div>
 						<div class="flip-card-back">
 							<ul>
@@ -212,7 +238,7 @@
 						<div class="flip-card-front">
 							<img src="{{ url_for('static', filename='img/card-dashboard.png') }}">
 							<h3>DASHBOARDS DEPORTIVOS</h3>
-							<p>Mas que un Grafico</p>
+							<p>MÁS que un Grafico</p>
 						</div>
 						<div class="flip-card-back">
 							<ul>
@@ -1019,6 +1045,51 @@
 	});
 	
 	</script>
+	<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const counters = document.querySelectorAll(".stat-number");
+		let started = false;
+
+		function animateCounters() {
+			counters.forEach(counter => {
+				const target = +counter.getAttribute("data-target");
+				const duration = 1500;
+				const stepTime = 20;
+				const steps = duration / stepTime;
+				const increment = target / steps;
+				let current = 0;
+
+				const updateCounter = () => {
+					current += increment;
+					if (current < target) {
+						counter.textContent = Math.round(current);
+						setTimeout(updateCounter, stepTime);
+					} else {
+						counter.textContent = target;
+					}
+				};
+
+				updateCounter();
+			});
+		}
+
+		const section = document.querySelector(".stats-section");
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting && !started) {
+					started = true;
+					animateCounters();
+				}
+			});
+		}, { threshold: 0.4 });
+
+		if (section) {
+			observer.observe(section);
+		}
+	});
+	</script>
+
 
 </body>
 </html>
