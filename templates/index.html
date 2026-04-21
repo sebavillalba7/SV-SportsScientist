@@ -25,7 +25,7 @@
                 <a href="#mentoria">Mentoría 1:1</a>
                 <a href="#servicios">Servicios</a>
                 <a href="#trayectoria">Trayectoria</a>
-                <a href="#casos">Casos de éxito</a>
+                <a href="#casos">Casos de Éxito</a>
                 <a href="#dashboard">Dashboard</a>
                 <a href="#contacto" class="btn-nav">Contacto</a>
             </nav>
@@ -393,7 +393,7 @@
             </div>
         </section>
 
-        <section id="historias-exito" class="section">
+        <section id="casos" class="section">
 			<div class="container">
 				<div class="section-head">
 					<span class="eyebrow">Historias de éxito</span>
@@ -402,6 +402,18 @@
 						Cada proceso es distinto, pero todos comparten algo: pasar de mirar datos aislados
 						a construir criterios claros, aplicables y útiles para el día a día profesional.
 					</p>
+				</div>
+				
+				<div class="casos-wrapper">
+    
+					<button class="casos-btn left" onclick="scrollCasos(-1)">‹</button>
+					
+					<div class="casos-scroll" id="casosScroll">
+						<!-- tus cards -->
+					</div>
+					
+					<button class="casos-btn right" onclick="scrollCasos(1)">›</button>
+
 				</div>
 
 				<div class="success-carousel-wrap">
@@ -1089,7 +1101,17 @@
 		}
 	});
 	</script>
+	<script>
+	function scrollCasos(direction) {
+		const container = document.getElementById("casosScroll");
+		const scrollAmount = container.clientWidth * 0.8;
 
+		container.scrollBy({
+			left: direction * scrollAmount,
+			behavior: "smooth"
+		});
+	}
+	</script>
 
 </body>
 </html>

@@ -735,15 +735,33 @@ nav a {
 /* MENTORÍA */
 .section-head-flex {
     display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(260px, 360px);
-    gap: 28px;
-    align-items: start;
+    grid-template-columns: minmax(0, 1.35fr) minmax(220px, 320px);
+    gap: 24px;
+    align-items: center;
+}
+
+.section-head-flex > div:first-child {
+    min-width: 0;
 }
 
 .section-head-visual {
     display: flex;
     justify-content: flex-end;
-    align-items: flex-start;
+    align-items: center;
+    min-width: 0;
+}
+
+.mentoria-head-img,
+.mentoria-video {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    display: block;
 }
 
 /* TRAYECTORIA */
@@ -1540,4 +1558,61 @@ nav a {
     .stat-item:last-child {
         border-bottom: none;
     }
+}
+section[id] {
+    scroll-margin-top: 110px;
+}
+.casos-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.casos-scroll {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px 0;
+}
+
+/* ocultar scroll feo */
+.casos-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* BOTONES */
+.casos-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(10,132,255,.15);
+    color: #fff;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 10;
+    backdrop-filter: blur(6px);
+}
+
+.casos-btn:hover {
+    background: rgba(10,132,255,.35);
+}
+
+.casos-btn.left {
+    left: -10px;
+}
+
+.casos-btn.right {
+    right: -10px;
+}
+.casos-btn {
+    opacity: 0.7;
+}
+
+.casos-wrapper:hover .casos-btn {
+    opacity: 1;
 }
