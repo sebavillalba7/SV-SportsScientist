@@ -1743,3 +1743,19 @@ section[id] {
     right: 6px;
   }
 }
+.mentoria-card,
+.mentoria-card-inner,
+.mentoria-card-front,
+.mentoria-card-back {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.mentoria-card-front,
+.mentoria-card-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.mentoria-card-inner {
+  will-change: transform;
+}
