@@ -1632,3 +1632,9 @@ section[id] {
 .mentoria-card-inner {
   will-change: transform;
 }
+.success-flag-img {
+    width: 18px;
+    height: 12px;
+    object-fit: cover;
+    opacity: 0.9;
+}
