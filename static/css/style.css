@@ -1647,3 +1647,15 @@ section[id] {
     padding: 10px 18px;
     opacity: 0.9;
 }
+
+.mapping-grid select {
+    background-color: #0B1A2B; /* fondo oscuro */
+    color: #E5EEF8; /* texto claro */
+    border: 1px solid rgba(10,132,255,.25);
+}
+
+/* opciones del dropdown */
+.mapping-grid select option {
+    background-color: #0B1A2B;
+    color: #E5EEF8;
+}
