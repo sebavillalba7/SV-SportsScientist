@@ -512,6 +512,16 @@
 						<button type="submit" class="btn btn-primary">SUBIR ARCHIVO</button>
 					</form>
 				</div>
+				<p class="upload-hint">
+					¿No tenés datos? Probá con un ejemplo real listo para usar.
+				</p>
+				<div class="upload-actions">
+					<a href="{{ url_for('static', filename='files/tension.csv') }}" 
+					   class="btn btn-secondary" 
+					   download>
+						DESCARGAR CSV DE PRUEBA
+					</a>
+				</div>
 				{% endif %}
 
 				{% if upload_stage == "mapping" %}
