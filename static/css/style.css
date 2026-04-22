@@ -1633,10 +1633,11 @@ section[id] {
   will-change: transform;
 }
 .success-flag-img {
-    width: 18px;
-    height: 12px;
+    width: 22px;
+    height: 15px;
     object-fit: cover;
-    opacity: 0.9;
+    border-radius: 2px;
+    margin-left: 6px;
 }
 .upload-actions {
     margin-top: 14px;
