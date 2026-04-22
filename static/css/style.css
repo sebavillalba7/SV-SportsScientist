@@ -1638,3 +1638,12 @@ section[id] {
     object-fit: cover;
     opacity: 0.9;
 }
+.upload-actions {
+    margin-top: 14px;
+}
+
+.upload-actions .btn {
+    font-size: 13px;
+    padding: 10px 18px;
+    opacity: 0.9;
+}
