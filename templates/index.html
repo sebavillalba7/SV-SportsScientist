@@ -12,6 +12,15 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HYFCJZ7MDP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HYFCJZ7MDP');
+    </script>
 </head>
 <body>
 
@@ -486,7 +495,9 @@
 		</section>
 
 
-		<!-- REEMPLAZÁ SOLO LA SECCIÓN id="dashboard" POR ESTE BLOQUE -->
+
+
+		<!-- SECCIÓN DASHBOARD CON REGISTRO DE LEADS, LOGO Y DESCARGA -->
 		<section id="dashboard" class="section">
 			<div class="container">
 				<div class="section-head">
@@ -497,10 +508,39 @@
 					</p>
 				</div>
 
+				<!-- ── GATEKEEPER: si no registró, muestra el bloque de acceso ── -->
+				{% if not lead_registered %}
+				<div class="lead-gate card upload-card" id="lead-gate">
+					<div class="lead-gate-icon">📊</div>
+					<h3>Acceso gratuito al Dashboard interactivo</h3>
+					<p>
+						Dejá tu email y celular para activar el análisis. Es gratis y sin spam —
+						te contactamos solo si querés llevar esto a tu equipo.
+					</p>
+					<button class="btn btn-primary" id="open-lead-modal-btn" style="margin-top:12px;">
+						QUIERO ACCEDER AL DASHBOARD
+					</button>
+				</div>
+				{% endif %}
+
+				{% if lead_registered %}
+
 				{% if upload_stage == "upload" %}
 				<div class="card upload-card">
-					<h3>1. Cargar archivo</h3>
+					<h3>1. Cargar archivo de datos</h3>
 					<p>Podés subir un archivo CSV o Excel. La app intenta limpiarlo, detectar columnas y prepararlo para el análisis.</p>
+
+					<!-- Logo del club (opcional, persiste via localStorage) -->
+					<div class="logo-upload-area" id="logo-upload-area">
+						<label class="logo-upload-label">
+							<span>📁 Subí el logo de tu club (opcional — PNG, JPG o SVG)</span>
+							<input type="file" id="club-logo-input" accept="image/png,image/jpeg,image/jpg,image/svg+xml" style="display:none;">
+						</label>
+						<div id="logo-preview-wrap" style="display:none;">
+							<img id="logo-preview" src="" alt="Logo del club" class="logo-preview-img">
+							<button type="button" id="logo-remove-btn" class="btn btn-secondary logo-remove-btn">✕ Quitar logo</button>
+						</div>
+					</div>
 
 					{% if upload_error %}
 					<div class="demo-alert">{{ upload_error }}</div>
@@ -606,7 +646,6 @@
 						</div>
 					</form>
 
-					<!-- FORMULARIO SEPARADO PARA LIMPIAR -->
 					<form method="POST" action="/#dashboard" class="mapping-actions reset-demo-form">
 						<input type="hidden" name="action" value="clear_file">
 						<button type="submit" class="btn btn-secondary">
@@ -619,55 +658,56 @@
 				{% if upload_stage == "dashboard" and demo_payload %}
 				<div class="card upload-card">
 					<h3>3. Estado del jugador y perfil de carga</h3>
-					<p>Elegí microciclo, posición y variables para explorar el grupo.</p>
+					<p>Elegí posición y variables para explorar el grupo.</p>
 
-					<div id="dynamic-demo"
-						 data-payload='{{ demo_payload | safe }}'>
+					<div id="dynamic-demo" data-payload='{{ demo_payload | safe }}'></div>
+
+					<!-- Barra superior: logo + acciones -->
+					<div class="dashboard-top-actions">
+						<!-- Logo inline -->
+						<div style="display:flex; align-items:center; gap:12px;">
+							<div id="logo-preview-wrap" style="display:none; align-items:center; gap:8px;">
+								<img id="logo-preview" src="" alt="Logo" class="logo-preview-inline">
+								<button type="button" id="logo-remove-btn" class="btn btn-secondary" style="padding:6px 10px; font-size:12px;">✕</button>
+							</div>
+							<label class="logo-upload-label-inline" title="Subí el logo de tu club" style="cursor:pointer;">
+								📁 Logo del club
+								<input type="file" id="club-logo-input" accept="image/png,image/jpeg,image/jpg,image/svg+xml" style="display:none;">
+							</label>
+						</div>
+						<!-- Botones derecha -->
+						<div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+							<form method="POST" style="margin:0;">
+								<input type="hidden" name="action" value="clear_file">
+								<button type="submit" class="btn btn-secondary">CARGAR OTRO ARCHIVO</button>
+							</form>
+							<button id="download-report-btn" class="btn btn-primary download-btn">
+								⬇ DESCARGAR INFORME HTML
+							</button>
+						</div>
 					</div>
-					<form method="POST" class="reset-demo-form">
-						<input type="hidden" name="action" value="clear_file">
-						<button type="submit" class="btn btn-secondary">CARGAR OTRO ARCHIVO</button>
-					</form>
 
 					<div class="demo-toolbar">
-						<label>Posición
-							<select id="filter-pos"></select>
-						</label>
-
-						<label>Semáforo 1
-							<select id="sem1"></select>
-						</label>
-
-						<label>Semáforo 2
-							<select id="sem2"></select>
-						</label>
-
-						<label>Semáforo 3
-							<select id="sem3"></select>
-						</label>
-
-						<label>Scatter X
-							<select id="scatter-x"></select>
-						</label>
-
-						<label>Scatter Y
-							<select id="scatter-y"></select>
-						</label>
-
-						<label>Tamaño
-							<select id="scatter-size"></select>
-						</label>
+						<label>Posición <select id="filter-pos"></select></label>
+						<label>Semáforo 1 <select id="sem1"></select></label>
+						<label>Semáforo 2 <select id="sem2"></select></label>
+						<label>Semáforo 3 <select id="sem3"></select></label>
+						<label>Scatter X <select id="scatter-x"></select></label>
+						<label>Scatter Y <select id="scatter-y"></select></label>
+						<label>Tamaño <select id="scatter-size"></select></label>
 					</div>
 
 					<div class="demo-grid">
 						<div class="demo-panel">
 							<h4>Estado del jugador</h4>
 							<div id="semaforo-table"></div>
+							<p class="chart-watermark">Web-Site Mag. Sebastián Villalba</p>
 						</div>
 
 						<div class="demo-panel">
 							<h4>Perfil de carga</h4>
 							<div id="scatter-chart"></div>
+							<p class="chart-watermark">Web-Site Mag. Sebastián Villalba</p>
 						</div>
 					</div>
 
@@ -767,31 +807,21 @@
 						const yellows = statuses.filter(s => s === "amarillo").length;
 						const greens = statuses.filter(s => s === "verde").length;
 
-						// Casos críticos
 						if (reds >= 2) {
 							return "Perfil exigente respecto al grupo. Conviene revisar la carga acumulada y valorar un ajuste individual; contemplar ultimos 7 dias.";
 						}
-
-						// Casos mixtos con una alerta clara
 						if (reds === 1 && yellows >= 1) {
 							return "Se detectan desvíos relevantes en más de una métrica. Recomendable profundizar el seguimiento y sumar contexto de la sesión; contemplar ultimos 7 dias.";
 						}
-
-						// Casos intermedios
 						if (reds === 1 || yellows >= 2) {
 							return "Comportamiento intermedio respecto al grupo. Vale la pena monitorear la evolución del estímulo y su consistencia en próximas sesiones; revisar los ultimos 3,5 y 7 dias.";
 						}
-
-						// Casos estables pero con un matiz
 						if (greens >= 2 && yellows === 1) {
 							return "Perfil mayormente estable, aunque una de las métricas se aleja del grupo. Puede ser útil revisar el contexto individual y otras variables.";
 						}
-
-						// Casos totalmente estables
 						if (greens === 3) {
 							return "Perfil estable dentro del grupo filtrado. El jugador se mantiene en una zona esperada para las métricas seleccionadas.";
 						}
-
 						return "Lectura disponible, aunque con información parcial para una conclusión más firme.";
 					}
 
@@ -915,6 +945,7 @@
 		</section>
 
 
+
         <section class="section alt">
             <div class="container">
                 <div class="section-head">
@@ -1003,8 +1034,8 @@
     </footer>
 
     <script>
-        const figure = {{ fig_json | safe }};
-        Plotly.newPlot("chart", figure.data, figure.layout, {responsive: true});
+        // fig_json reservado para futuras visualizaciones globales
+        // El dashboard interactivo usa Plotly directamente en su propio script
     </script>
 	
 	<script>
@@ -1125,6 +1156,277 @@
 			behavior: "smooth"
 		});
 	}
+	</script>
+
+	<!-- ══════════════════════════════════════════════════════════
+	     MODAL DE REGISTRO — HTML del modal (Jinja2 lo controla)
+	     ══════════════════════════════════════════════════════════ -->
+	{% if not lead_registered %}
+	<div id="lead-modal" class="lead-modal-overlay" style="display:none;" role="dialog" aria-modal="true">
+		<div class="lead-modal-box">
+			<div class="lead-modal-icon">📊</div>
+			<h3>Accedé al Dashboard de Análisis</h3>
+			<p>
+				Dejá tu email y celular para activar el demo gratuito. Solo te contactamos si querés llevar esto a tu club.
+			</p>
+			<div id="lead-error" class="lead-modal-error" style="display:none;"></div>
+			<div class="lead-modal-field">
+				<label for="lead-email">Email profesional *</label>
+				<input type="email" id="lead-email" placeholder="ejemplo@club.com" autocomplete="email">
+			</div>
+			<div class="lead-modal-field">
+				<label for="lead-phone">Celular con código de país *</label>
+				<input type="tel" id="lead-phone" placeholder="+54 9 3424391972" autocomplete="tel">
+			</div>
+			<button id="lead-submit" class="btn btn-primary lead-modal-btn">
+				ACCEDER AL DASHBOARD GRATIS
+			</button>
+			<p class="lead-modal-legal">
+				Tus datos no se comparten. Solo te contactamos si lo pedís vos.
+			</p>
+		</div>
+	</div>
+
+	<script>
+	// ── Modal de registro ──────────────────────────────────────────
+	(function() {
+		const modal      = document.getElementById("lead-modal");
+		const openBtn    = document.getElementById("open-lead-modal-btn");
+		const submitBtn  = document.getElementById("lead-submit");
+		const errBox     = document.getElementById("lead-error");
+
+		if (!modal || !openBtn) return;
+
+		// Abrir modal al hacer click en el botón del gatekeeper
+		openBtn.addEventListener("click", function() {
+			modal.style.display = "flex";
+			document.getElementById("lead-email").focus();
+		});
+
+		// También abrir si hacen click en el link #dashboard del nav
+		document.querySelectorAll('a[href="#dashboard"]').forEach(function(a) {
+			a.addEventListener("click", function() {
+				// Solo si no está registrado (el botón existe)
+				if (document.getElementById("open-lead-modal-btn")) {
+					setTimeout(function() {
+						modal.style.display = "flex";
+					}, 400);
+				}
+			});
+		});
+
+		// Cerrar si clickean fuera del box
+		modal.addEventListener("click", function(e) {
+			if (e.target === modal) modal.style.display = "none";
+		});
+
+		// Submit
+		submitBtn.addEventListener("click", async function() {
+			const email = document.getElementById("lead-email").value.trim();
+			const phone = document.getElementById("lead-phone").value.trim();
+
+			errBox.style.display = "none";
+			submitBtn.textContent = "Guardando...";
+			submitBtn.disabled = true;
+
+			try {
+				const res = await fetch("/register-lead", {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({email, phone})
+				});
+				const data = await res.json();
+
+				if (data.ok) {
+					// Éxito: recargamos la página para que Flask sepa que el lead está registrado
+					modal.style.display = "none";
+					window.location.href = "/#dashboard";
+					window.location.reload();
+				} else {
+					errBox.textContent = data.error || "Error al guardar. Intentá de nuevo.";
+					errBox.style.display = "block";
+					submitBtn.textContent = "ACCEDER AL DASHBOARD GRATIS";
+					submitBtn.disabled = false;
+				}
+			} catch(e) {
+				errBox.textContent = "Error de conexión. Verificá tu internet.";
+				errBox.style.display = "block";
+				submitBtn.textContent = "ACCEDER AL DASHBOARD GRATIS";
+				submitBtn.disabled = false;
+			}
+		});
+
+		// Enter en los inputs hace submit
+		["lead-email", "lead-phone"].forEach(function(id) {
+			const el = document.getElementById(id);
+			if (el) el.addEventListener("keydown", function(e) {
+				if (e.key === "Enter") submitBtn.click();
+			});
+		});
+	})();
+	</script>
+	{% endif %}
+
+	<!-- ══════════════════════════════════════════════════════════
+	     LOGO DEL CLUB — carga y preview via JS (sin servidor)
+	     ══════════════════════════════════════════════════════════ -->
+	<script>
+	(function() {
+		const input   = document.getElementById("club-logo-input");
+		const preview = document.getElementById("logo-preview");
+		const wrap    = document.getElementById("logo-preview-wrap");
+		const removeBtn = document.getElementById("logo-remove-btn");
+
+		if (!input) return;
+
+		// Recuperar logo guardado en sessionStorage
+		const saved = sessionStorage.getItem("clubLogoDataUrl");
+		if (saved && preview && wrap) {
+			preview.src = saved;
+			wrap.style.display = "flex";
+		}
+
+		input.addEventListener("change", function() {
+			const file = input.files[0];
+			if (!file) return;
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				const dataUrl = e.target.result;
+				sessionStorage.setItem("clubLogoDataUrl", dataUrl);
+				if (preview) { preview.src = dataUrl; }
+				if (wrap)    { wrap.style.display = "flex"; }
+			};
+			reader.readAsDataURL(file);
+		});
+
+		if (removeBtn) {
+			removeBtn.addEventListener("click", function() {
+				sessionStorage.removeItem("clubLogoDataUrl");
+				if (preview) preview.src = "";
+				if (wrap)    wrap.style.display = "none";
+				input.value = "";
+			});
+		}
+	})();
+	</script>
+
+	<!-- ══════════════════════════════════════════════════════════
+	     DESCARGA DE INFORME HTML con marca de agua
+	     ══════════════════════════════════════════════════════════ -->
+	<script>
+	(function() {
+		const downloadBtn = document.getElementById("download-report-btn");
+		if (!downloadBtn) return;
+
+		downloadBtn.addEventListener("click", function() {
+			// Capturar tabla de semáforo
+			const tableEl = document.getElementById("semaforo-table");
+			const tableHtml = tableEl ? tableEl.innerHTML : "<p>Sin datos de tabla.</p>";
+
+			// Capturar imagen del scatter como PNG via Plotly
+			const scatterDiv = document.getElementById("scatter-chart");
+			if (!scatterDiv || !scatterDiv.data) {
+				alert("Generá el gráfico primero antes de descargar.");
+				return;
+			}
+
+			Plotly.toImage(scatterDiv, {format: "png", width: 900, height: 500}).then(function(imgDataUrl) {
+				// Logo del club
+				const logoDataUrl = sessionStorage.getItem("clubLogoDataUrl") || "";
+				const logoHtml = logoDataUrl
+					? `<img src="${logoDataUrl}" style="height:70px; max-width:220px; object-fit:contain; margin-bottom:12px;" alt="Logo del club">`
+					: "";
+
+				// Interpretación
+				const interpEl = document.getElementById("demo-interpretation");
+				const interpHtml = interpEl ? interpEl.innerHTML : "";
+
+				// Fecha
+				const fecha = new Date().toLocaleDateString("es-AR", {day:"2-digit", month:"long", year:"numeric"});
+
+				// HTML del informe — una sola página imprimible
+				const reportHtml = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Informe de Rendimiento — SV Sports Scientist</title>
+<style>
+  @page { size: A4; margin: 18mm 14mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #fff; color: #111; font-size: 12px; }
+  .report-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0A84FF; padding-bottom: 10px; margin-bottom: 18px; }
+  .report-header h1 { font-size: 18px; color: #07111F; }
+  .report-header p  { font-size: 11px; color: #555; margin-top: 3px; }
+  .report-logo { height: 60px; max-width: 180px; object-fit: contain; }
+  .report-section { margin-bottom: 22px; }
+  .report-section h2 { font-size: 13px; font-weight: 800; text-transform: uppercase; color: #0A84FF; border-bottom: 1px solid #dde; padding-bottom: 5px; margin-bottom: 10px; letter-spacing: .05em; }
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th { background: #07111F; color: #fff; padding: 7px 8px; text-align: left; }
+  td { padding: 6px 8px; border-bottom: 1px solid #eee; }
+  tr:nth-child(even) td { background: #f5f8ff; }
+  .pill-green  { background:#dcfce7; color:#166534; padding:2px 7px; border-radius:999px; font-weight:700; font-size:10px; }
+  .pill-yellow { background:#fef9c3; color:#854d0e; padding:2px 7px; border-radius:999px; font-weight:700; font-size:10px; }
+  .pill-red    { background:#fee2e2; color:#991b1b; padding:2px 7px; border-radius:999px; font-weight:700; font-size:10px; }
+  .pill-gray   { background:#f1f5f9; color:#64748b; padding:2px 7px; border-radius:999px; font-weight:700; font-size:10px; }
+  .scatter-img { width: 100%; max-width: 750px; display: block; margin: 0 auto; }
+  .interp { background: #f0f7ff; border-left: 3px solid #0A84FF; padding: 10px 14px; border-radius: 4px; font-size: 11px; line-height: 1.7; color: #1e3a5f; }
+  .watermark { text-align: center; font-size: 9px; color: #aaa; margin-top: 6px; letter-spacing: .03em; }
+  .footer-report { border-top: 1px solid #dde; margin-top: 20px; padding-top: 10px; font-size: 10px; color: #888; display: flex; justify-content: space-between; }
+  @media print {
+    .no-print { display: none; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="report-header">
+  <div>
+    ${logoHtml}
+    <h1>Informe de Rendimiento GPS</h1>
+    <p>Generado el ${fecha} · SV Sports Scientist — Mag. Sebastián Villalba</p>
+  </div>
+</div>
+
+<div class="report-section">
+  <h2>Estado del jugador — Semáforo de cargas</h2>
+  ${tableHtml}
+  <p class="watermark">Web-Site Mag. Sebastián Villalba</p>
+</div>
+
+<div class="report-section">
+  <h2>Perfil de carga — Scatter de grupo</h2>
+  <img src="${imgDataUrl}" class="scatter-img" alt="Scatter de carga">
+  <p class="watermark">Web-Site Mag. Sebastián Villalba</p>
+</div>
+
+<div class="report-section">
+  <h2>Lectura automática</h2>
+  <div class="interp">${interpHtml}</div>
+</div>
+
+<div class="footer-report">
+  <span>SV Sports Scientist · sebastiangvillalba@gmail.com</span>
+  <span>Generado con la herramienta de análisis de svss.com.ar</span>
+</div>
+
+</body>
+</html>`;
+
+				// Descargar
+				const blob = new Blob([reportHtml], {type: "text/html;charset=utf-8"});
+				const url  = URL.createObjectURL(blob);
+				const a    = document.createElement("a");
+				a.href     = url;
+				a.download = "informe-rendimiento-svss.html";
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+				URL.revokeObjectURL(url);
+			}).catch(function(err) {
+				alert("No se pudo capturar el gráfico. Asegurate de que el scatter esté visible.");
+			});
+		});
+	})();
 	</script>
 
 </body>
