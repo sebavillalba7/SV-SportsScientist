@@ -12,6 +12,14 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HYFCJZ7MDP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HYFCJZ7MDP');
+    </script>
 </head>
 <body>
 
@@ -1025,8 +1033,7 @@
     </footer>
 
     <script>
-        const figure = {{ fig_json | safe }};
-        Plotly.newPlot("chart", figure.data, figure.layout, {responsive: true});
+        // Plotly dashboard usa su propio script interno
     </script>
 	
 	<script>
@@ -1158,7 +1165,7 @@
 			<div class="lead-modal-icon">📊</div>
 			<h3>Accedé al Dashboard de Análisis</h3>
 			<p>
-				Dejá tu email y celular para activar el demo gratuito. Solo te contactamos si querés llevar esto a tu club.
+				Dejá tus datos para activar el demo gratuito. Solo te contactamos si querés llevar esto a tu club.
 			</p>
 			<div id="lead-error" class="lead-modal-error" style="display:none;"></div>
 			<div class="lead-modal-field">
@@ -1183,29 +1190,25 @@
 	</div>
 
 	<script>
-	// ── Modal de registro ──────────────────────────────────────────
 	(function() {
-		const modal      = document.getElementById("lead-modal");
-		const openBtn    = document.getElementById("open-lead-modal-btn");
-		const submitBtn  = document.getElementById("lead-submit");
-		const errBox     = document.getElementById("lead-error");
+		const modal     = document.getElementById("lead-modal");
+		const openBtn   = document.getElementById("open-lead-modal-btn");
+		const submitBtn = document.getElementById("lead-submit");
+		const errBox    = document.getElementById("lead-error");
 
 		if (!modal || !openBtn) return;
 
 		// Abrir modal al hacer click en el botón del gatekeeper
 		openBtn.addEventListener("click", function() {
 			modal.style.display = "flex";
-			document.getElementById("lead-email").focus();
+			document.getElementById("lead-nombre").focus();
 		});
 
 		// También abrir si hacen click en el link #dashboard del nav
 		document.querySelectorAll('a[href="#dashboard"]').forEach(function(a) {
 			a.addEventListener("click", function() {
-				// Solo si no está registrado (el botón existe)
 				if (document.getElementById("open-lead-modal-btn")) {
-					setTimeout(function() {
-						modal.style.display = "flex";
-					}, 400);
+					setTimeout(function() { modal.style.display = "flex"; }, 400);
 				}
 			});
 		});
@@ -1226,7 +1229,7 @@
 			submitBtn.disabled = true;
 
 			try {
-				const res = await fetch("/register-lead", {
+				const res  = await fetch("/register-lead", {
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
 					body: JSON.stringify({nombre, email, phone})
@@ -1234,7 +1237,6 @@
 				const data = await res.json();
 
 				if (data.ok) {
-					// Éxito: recargamos la página para que Flask sepa que el lead está registrado
 					modal.style.display = "none";
 					window.location.href = "/#dashboard";
 					window.location.reload();
