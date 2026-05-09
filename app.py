@@ -1,5 +1,4 @@
-
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, jsonify
 import pandas as pd
 import plotly.express as px
 import json
@@ -7,12 +6,16 @@ import plotly
 from pathlib import Path
 import uuid
 import re
+import csv
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "sv_demo_secret_key_change_me"
 
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
+
+LEADS_FILE = Path("leads.csv")
 
 BRAND = {
     "nombre": "Sebastián Villalba",
@@ -33,11 +36,50 @@ BRAND = {
 }
 
 
+# ─── LEAD CAPTURE ───────────────────────────────────────────────────────────
+
+def save_lead(email: str, phone: str):
+    """Guarda el lead en leads.csv. Crea el archivo con header si no existe."""
+    file_exists = LEADS_FILE.exists()
+    with open(LEADS_FILE, "a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(["timestamp", "email", "phone"])
+        writer.writerow([datetime.now().isoformat(), email.strip(), phone.strip()])
+
+
+@app.route("/register-lead", methods=["POST"])
+def register_lead():
+    """Endpoint AJAX que valida y guarda el lead, luego marca la sesión."""
+    data = request.get_json(silent=True) or {}
+    email = data.get("email", "").strip()
+    phone = data.get("phone", "").strip()
+
+    # Validación básica de email
+    email_ok = re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email) is not None
+
+    # Validación básica de teléfono: acepta +54 9 3424391972 y variantes
+    # Debe tener entre 8 y 20 dígitos/espacios/guiones, puede empezar con +
+    phone_ok = re.match(r"^\+?[\d\s\-]{8,20}$", phone) is not None
+
+    if not email_ok:
+        return jsonify({"ok": False, "error": "El email no tiene un formato válido."}), 400
+    if not phone_ok:
+        return jsonify({"ok": False, "error": "El teléfono no tiene un formato válido. Ejemplo: +54 9 3424391972"}), 400
+
+    save_lead(email, phone)
+    session["lead_registered"] = True
+
+    return jsonify({"ok": True})
+
+
+# ─── HELPERS ─────────────────────────────────────────────────────────────────
+
 def clean_columns(columns):
     cleaned = []
     for c in columns:
         c = str(c)
-        c = c.replace("\ufeff", "")   # elimina BOM oculto
+        c = c.replace("\ufeff", "")
         c = c.strip()
         c = re.sub(r"\s+", " ", c)
         cleaned.append(c)
@@ -51,7 +93,6 @@ def load_uploaded_file(file_storage):
     file_storage.save(temp_path)
 
     if suffix in [".csv", ".txt"]:
-        # intenta separadores comunes
         last_error = None
         for sep in [None, ";", ",", "\t"]:
             try:
@@ -78,12 +119,10 @@ def normalize_dataframe(df):
     df = df.copy()
     df.columns = clean_columns(df.columns)
 
-    # limpia strings
     for col in df.columns:
         if df[col].dtype == "object":
             df[col] = df[col].astype(str).str.strip()
 
-    # intenta convertir columnas numéricas
     for col in df.columns:
         if df[col].dtype == "object":
             s = df[col].astype(str).str.replace(".", "", regex=False)
@@ -140,28 +179,14 @@ def build_fixed_demo_chart():
     return fig.to_json()
 
 
-def classify_status(value, mean, std):
-    if pd.isna(value) or pd.isna(mean):
-        return "gris"
-    if std == 0 or pd.isna(std):
-        return "verde"
-    z = (value - mean) / std
-    if abs(z) <= 0.75:
-        return "verde"
-    elif abs(z) <= 1.5:
-        return "amarillo"
-    return "rojo"
-
-
 def build_demo_payload(df, mapping):
     player_col = mapping["player_col"]
     pos_col = mapping["pos_col"]
-    
-    # limpieza extra por seguridad
+
     df = df.copy()
     df.columns = clean_columns(df.columns)
     player_col = player_col.replace("\ufeff", "").strip()
-    pos_col = pos_col.replace("\ufeff", "").strip()  
+    pos_col = pos_col.replace("\ufeff", "").strip()
 
     semaforo_options = [
         mapping["totdist_col"],
@@ -175,7 +200,7 @@ def build_demo_payload(df, mapping):
         "y": mapping.get("mtsmin_col", "").replace("\ufeff", "").strip(),
         "size": mapping.get("minutes_col", "").replace("\ufeff", "").strip()
     }
-    
+
     return {
         "records": df.to_dict(orient="records"),
         "columns": list(df.columns),
@@ -190,42 +215,8 @@ def build_demo_payload(df, mapping):
             "scatter_size": scatter_defaults["size"]
         }
     }
-    
-    
 
-    needed = [player_col,pos_col] + semaforo_options + [scatter_defaults["x"], scatter_defaults["y"], scatter_defaults["size"]]
-    needed = [c for c in needed if c and c in df.columns]
-    demo_df = df[needed].copy()
 
-    # agrupamos por microciclo, posición y jugador
-    agg_map = {}
-    for c in demo_df.columns:
-        if c == player_col:
-            continue
-        if pd.api.types.is_numeric_dtype(demo_df[c]):
-            agg_map[c] = "mean"
-        else:
-            agg_map[c] = "first"
-
-    grouped = demo_df.groupby(player_col, as_index=False).agg(agg_map)
-
-    # para cada combinación de filtro, usamos el df base sin agrupar y la agrupación la hace JS
-    records = df.to_dict(orient="records")
-
-    return {
-        "records": records,
-        "columns": list(df.columns),
-        "mapping": mapping,
-        "filters": {
-            "pos_values": sorted([str(v) for v in df[pos_col].dropna().unique().tolist()]) if pos_col in df.columns else []
-        },
-        "defaults": {
-            "semaforo": semaforo_options[:3],
-            "scatter_x": scatter_defaults["x"],
-            "scatter_y": scatter_defaults["y"],
-            "scatter_size": scatter_defaults["size"]
-        }
-    }
 def clear_uploaded_session():
     csv_path = session.get("uploaded_csv_path")
     if csv_path:
@@ -237,6 +228,8 @@ def clear_uploaded_session():
     session.pop("uploaded_csv_path", None)
     session["upload_stage"] = "upload"
 
+
+# ─── MAIN ROUTE ──────────────────────────────────────────────────────────────
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -271,7 +264,6 @@ def home():
     suggestions = {}
     demo_payload = None
 
-    # Cada vez que se abre la home "desde cero", arrancamos limpio
     if request.method == "GET":
         clear_uploaded_session()
         upload_stage = "upload"
@@ -299,10 +291,10 @@ def home():
                 try:
                     print("Archivo recibido:", file.filename)
                     print("Extension:", Path(file.filename).suffix.lower())
-                    
+
                     df, temp_path = load_uploaded_file(file)
                     df = normalize_dataframe(df)
-                    
+
                     print("Columnas detectadas:", df.columns.tolist())
                     print("Shape:", df.shape)
 
@@ -345,21 +337,13 @@ def home():
                     "decel_col": request.form.get("decel_col", ""),
                     "mtsmin_col": request.form.get("mtsmin_col", "")
                 }
-                
+
                 mapping = {k: v.replace("\ufeff", "").strip() if isinstance(v, str) else v for k, v in mapping.items()}
-                
+
                 print("Mapping recibido:", mapping)
                 print("CSV path:", csv_path)
 
-                required = [
-                    "player_col",
-                    "pos_col",
-                    "totdist_col",
-                    "hsd_col",
-                    "mtsmin_col",
-                    "minutes_col"
-                ]
-
+                required = ["player_col", "pos_col", "totdist_col", "hsd_col", "mtsmin_col", "minutes_col"]
                 missing = [k for k in required if not mapping.get(k)]
 
                 if missing:
@@ -373,7 +357,7 @@ def home():
                     upload_stage = "dashboard"
                     columns = list(df.columns)
                     suggestions = mapping
-                    
+
             print("Mapping recibido:", mapping)
             print("CSV path:", csv_path)
 
@@ -387,6 +371,9 @@ def home():
             columns = list(df.columns)
             suggestions = build_mapping_suggestions(columns)
 
+    # Pasar al template si el usuario ya registró sus datos en esta sesión
+    lead_registered = session.get("lead_registered", False)
+
     return render_template(
         "index.html",
         brand=BRAND,
@@ -397,7 +384,8 @@ def home():
         upload_stage=upload_stage,
         upload_columns=columns,
         mapping_suggestions=suggestions,
-        demo_payload=json.dumps(demo_payload) if demo_payload else None
+        demo_payload=json.dumps(demo_payload) if demo_payload else None,
+        lead_registered=lead_registered
     )
 
 
