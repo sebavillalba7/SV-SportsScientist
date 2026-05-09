@@ -12,14 +12,6 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HYFCJZ7MDP"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-HYFCJZ7MDP');
-    </script>
 </head>
 <body>
 
@@ -687,47 +679,13 @@
 					</div>
 
 					<div class="demo-toolbar">
-
-						<!-- Fila 1 col 1: Posición multiselect -->
-						<label>Posición
-							<div class="multiselect-wrap" id="pos-multiselect-wrap">
-								<button type="button" class="multiselect-btn" id="pos-multiselect-btn">
-									<span id="pos-multiselect-label">Todos</span>
-									<span class="multiselect-arrow">▾</span>
-								</button>
-								<div class="multiselect-dropdown" id="pos-multiselect-dropdown" style="display:none;">
-									<label class="multiselect-option">
-										<input type="checkbox" id="pos-check-all" checked> Todos
-									</label>
-									<hr class="ms-divider">
-									<div id="pos-options-list"></div>
-								</div>
-							</div>
-						</label>
-
-						<!-- Fila 1 col 2: Jugadores multiselect -->
-						<label>Jugadores
-							<div class="multiselect-wrap" id="player-multiselect-wrap">
-								<button type="button" class="multiselect-btn" id="player-multiselect-btn">
-									<span id="player-multiselect-label">Todos</span>
-									<span class="multiselect-arrow">▾</span>
-								</button>
-								<div class="multiselect-dropdown" id="player-multiselect-dropdown" style="display:none;">
-									<label class="multiselect-option">
-										<input type="checkbox" id="player-check-all" checked> Todos
-									</label>
-									<hr class="ms-divider">
-									<div id="player-options-list"></div>
-								</div>
-							</div>
-						</label>
-
+						<label>Posición <select id="filter-pos"></select></label>
 						<label>Semáforo 1 <select id="sem1"></select></label>
 						<label>Semáforo 2 <select id="sem2"></select></label>
 						<label>Semáforo 3 <select id="sem3"></select></label>
-						<label>Scatter X  <select id="scatter-x"></select></label>
-						<label>Scatter Y  <select id="scatter-y"></select></label>
-						<label>Tamaño     <select id="scatter-size"></select></label>
+						<label>Scatter X <select id="scatter-x"></select></label>
+						<label>Scatter Y <select id="scatter-y"></select></label>
+						<label>Tamaño <select id="scatter-size"></select></label>
 					</div>
 
 					<div class="demo-grid">
@@ -759,324 +717,221 @@
 					if (!root) return;
 					const payload = JSON.parse(root.dataset.payload);
 
-					const records  = payload.records;
-					const cols     = payload.columns;
-					const mapping  = payload.mapping;
+					const records = payload.records;
+					const cols = payload.columns;
+					const mapping = payload.mapping;
 					const defaults = payload.defaults;
-					const posValues = payload.filters.pos_values;
 
-					// ── Selects normales ──────────────────────────────────
-					const sem1        = document.getElementById("sem1");
-					const sem2        = document.getElementById("sem2");
-					const sem3        = document.getElementById("sem3");
-					const scatterX    = document.getElementById("scatter-x");
-					const scatterY    = document.getElementById("scatter-y");
+					const filterPos = document.getElementById("filter-pos");
+					const sem1 = document.getElementById("sem1");
+					const sem2 = document.getElementById("sem2");
+					const sem3 = document.getElementById("sem3");
+					const scatterX = document.getElementById("scatter-x");
+					const scatterY = document.getElementById("scatter-y");
 					const scatterSize = document.getElementById("scatter-size");
 
-					function fillSelect(sel, options, selectedValue) {
-						sel.innerHTML = "";
+					function fillSelect(select, options, selectedValue, includeAll=false) {
+						select.innerHTML = "";
+						if (includeAll) {
+							const op = document.createElement("option");
+							op.value = "__all__";
+							op.textContent = "Todos";
+							select.appendChild(op);
+						}
 						options.forEach(v => {
 							const op = document.createElement("option");
-							op.value = v; op.textContent = v;
-							op.style.background = "#0d1f38";
-							op.style.color = "#EDF3FB";
+							op.value = v;
+							op.textContent = v;
 							if (String(selectedValue) === String(v)) op.selected = true;
-							sel.appendChild(op);
-						});
-					}
-					fillSelect(sem1,        cols, defaults.semaforo[0] || "");
-					fillSelect(sem2,        cols, defaults.semaforo[1] || "");
-					fillSelect(sem3,        cols, defaults.semaforo[2] || "");
-					fillSelect(scatterX,    cols, defaults.scatter_x);
-					fillSelect(scatterY,    cols, defaults.scatter_y);
-					fillSelect(scatterSize, cols, defaults.scatter_size);
-
-					// ── Helper multiselect genérico ───────────────────────
-					function buildMultiselect(cfg) {
-						// cfg: { btnId, labelId, dropdownId, checkAllId, listId, values, onchange }
-						const btn      = document.getElementById(cfg.btnId);
-						const lbl      = document.getElementById(cfg.labelId);
-						const dropdown = document.getElementById(cfg.dropdownId);
-						const checkAll = document.getElementById(cfg.checkAllId);
-						const list     = document.getElementById(cfg.listId);
-
-						cfg.values.forEach(v => {
-							const la = document.createElement("label");
-							la.className = "multiselect-option";
-							la.innerHTML = `<input type="checkbox" value="${v}" checked> ${v}`;
-							list.appendChild(la);
-						});
-
-						function getSelected() {
-							return Array.from(list.querySelectorAll("input:checked")).map(i => i.value);
-						}
-						function updateLabel() {
-							const sel = getSelected();
-							if (!sel.length)                   { lbl.textContent = "Ninguno"; return; }
-							if (sel.length === cfg.values.length){ lbl.textContent = "Todos";   return; }
-							lbl.textContent = sel.length === 1 ? sel[0] : `${sel.length} sel.`;
-						}
-						btn.addEventListener("click", e => {
-							e.stopPropagation();
-							dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
-						});
-						document.addEventListener("click", () => { dropdown.style.display = "none"; });
-						dropdown.addEventListener("click", e => e.stopPropagation());
-
-						checkAll.addEventListener("change", () => {
-							list.querySelectorAll("input").forEach(i => i.checked = checkAll.checked);
-							updateLabel(); cfg.onchange();
-						});
-						list.addEventListener("change", () => {
-							checkAll.checked = Array.from(list.querySelectorAll("input")).every(i => i.checked);
-							updateLabel(); cfg.onchange();
-						});
-
-						return { getSelected, updateLabel, list, checkAll };
-					}
-
-					// ── Multiselect posición ──────────────────────────────
-					const msPos = buildMultiselect({
-						btnId: "pos-multiselect-btn", labelId: "pos-multiselect-label",
-						dropdownId: "pos-multiselect-dropdown", checkAllId: "pos-check-all",
-						listId: "pos-options-list", values: posValues,
-						onchange: () => { rebuildPlayerList(); update(); }
-					});
-
-					// ── Multiselect jugadores ─────────────────────────────
-					// Todos los jugadores únicos del dataset
-					const allPlayers = [...new Set(records.map(r => r[mapping.player_col]))].sort();
-					let msPlayer = buildMultiselect({
-						btnId: "player-multiselect-btn", labelId: "player-multiselect-label",
-						dropdownId: "player-multiselect-dropdown", checkAllId: "player-check-all",
-						listId: "player-options-list", values: allPlayers,
-						onchange: () => update()
-					});
-
-					// Cuando cambia posición → reconstruir lista de jugadores disponibles
-					function rebuildPlayerList() {
-						const selPos = msPos.getSelected();
-						const list   = document.getElementById("player-options-list");
-						const checkAll = document.getElementById("player-check-all");
-						list.innerHTML = "";
-
-						const availPlayers = selPos.length === 0
-							? []
-							: [...new Set(
-								records
-									.filter(r => selPos.includes(String(r[mapping.pos_col])))
-									.map(r => r[mapping.player_col])
-							)].sort();
-
-						availPlayers.forEach(v => {
-							const la = document.createElement("label");
-							la.className = "multiselect-option";
-							la.innerHTML = `<input type="checkbox" value="${v}" checked> ${v}`;
-							list.appendChild(la);
-						});
-
-						checkAll.checked = true;
-						document.getElementById("player-multiselect-label").textContent = "Todos";
-
-						// Re-bind listener
-						list.addEventListener("change", () => {
-							checkAll.checked = Array.from(list.querySelectorAll("input")).every(i => i.checked);
-							const sel = Array.from(list.querySelectorAll("input:checked")).map(i => i.value);
-							const lbl = document.getElementById("player-multiselect-label");
-							if (!sel.length)                      lbl.textContent = "Ninguno";
-							else if (sel.length === availPlayers.length) lbl.textContent = "Todos";
-							else lbl.textContent = sel.length === 1 ? sel[0] : `${sel.length} sel.`;
-							update();
-						});
-
-						checkAll.addEventListener("change", function() {
-							list.querySelectorAll("input").forEach(i => i.checked = checkAll.checked);
-							document.getElementById("player-multiselect-label").textContent = checkAll.checked ? "Todos" : "Ninguno";
-							update();
+							select.appendChild(op);
 						});
 					}
 
-					function getSelectedPlayers() {
-						return Array.from(document.getElementById("player-options-list").querySelectorAll("input:checked"))
-							.map(i => i.value);
+					fillSelect(filterPos, payload.filters.pos_values, payload.filters.pos_values[0], true);
+					fillSelect(sem1, cols, defaults.semaforo[0] || "", false);
+					fillSelect(sem2, cols, defaults.semaforo[1] || "", false);
+					fillSelect(sem3, cols, defaults.semaforo[2] || "", false);
+					fillSelect(scatterX, cols, defaults.scatter_x, false);
+					fillSelect(scatterY, cols, defaults.scatter_y, false);
+					fillSelect(scatterSize, cols, defaults.scatter_size, false);
+
+					function asNumber(v) {
+						const n = Number(v);
+						return Number.isFinite(n) ? n : null;
 					}
 
-					// ── Helpers matemáticos ───────────────────────────────
-					function asNumber(v) { const n = Number(v); return Number.isFinite(n) ? n : null; }
 					function mean(arr) {
-						const c = arr.filter(v => v !== null);
-						return c.length ? c.reduce((a,b) => a+b, 0) / c.length : null;
+						const clean = arr.filter(v => v !== null);
+						if (!clean.length) return null;
+						return clean.reduce((a,b) => a+b, 0) / clean.length;
 					}
+
 					function std(arr, m) {
-						const c = arr.filter(v => v !== null);
-						if (!c.length) return null;
-						const mu = m ?? mean(c);
-						return Math.sqrt(c.reduce((acc,v) => acc + Math.pow(v-mu,2), 0) / c.length);
+						const clean = arr.filter(v => v !== null);
+						if (!clean.length) return null;
+						const mu = m ?? mean(clean);
+						const variance = clean.reduce((acc,v) => acc + Math.pow(v - mu, 2), 0) / clean.length;
+						return Math.sqrt(variance);
 					}
+
 					function classify(value, m, s) {
 						if (value === null || m === null) return "gris";
 						if (!s || s === 0) return "verde";
 						const z = (value - m) / s;
 						if (Math.abs(z) <= 0.75) return "verde";
-						if (Math.abs(z) <= 1.5)  return "amarillo";
+						if (Math.abs(z) <= 1.5) return "amarillo";
 						return "rojo";
 					}
-					function statusHtml(st) {
-						return { verde:'<span class="pill pill-green">Verde</span>',
-						         amarillo:'<span class="pill pill-yellow">Amarillo</span>',
-						         rojo:'<span class="pill pill-red">Rojo</span>',
-						         gris:'<span class="pill pill-gray">Sin dato</span>' }[st]
-						       || '<span class="pill pill-gray">Sin dato</span>';
+
+					function statusHtml(status) {
+						const map = {
+							verde: '<span class="pill pill-green">Verde</span>',
+							amarillo: '<span class="pill pill-yellow">Amarillo</span>',
+							rojo: '<span class="pill pill-red">Rojo</span>',
+							gris: '<span class="pill pill-gray">Sin dato</span>'
+						};
+						return map[status] || map.gris;
 					}
+
 					function recommendation(statuses) {
-						const r = statuses.filter(s=>s==="rojo").length;
-						const y = statuses.filter(s=>s==="amarillo").length;
-						const g = statuses.filter(s=>s==="verde").length;
-						if (r>=2)          return "Perfil exigente respecto al grupo. Conviene revisar la carga acumulada y valorar un ajuste individual; contemplar ultimos 7 dias.";
-						if (r===1&&y>=1)   return "Se detectan desvíos relevantes en más de una métrica. Recomendable profundizar el seguimiento y sumar contexto de la sesión; contemplar ultimos 7 dias.";
-						if (r===1||y>=2)   return "Comportamiento intermedio respecto al grupo. Vale la pena monitorear la evolución del estímulo y su consistencia en próximas sesiones; revisar los ultimos 3,5 y 7 dias.";
-						if (g>=2&&y===1)   return "Perfil mayormente estable, aunque una de las métricas se aleja del grupo. Puede ser útil revisar el contexto individual y otras variables.";
-						if (g===3)         return "Perfil estable dentro del grupo filtrado. El jugador se mantiene en una zona esperada para las métricas seleccionadas.";
+						const reds = statuses.filter(s => s === "rojo").length;
+						const yellows = statuses.filter(s => s === "amarillo").length;
+						const greens = statuses.filter(s => s === "verde").length;
+
+						if (reds >= 2) {
+							return "Perfil exigente respecto al grupo. Conviene revisar la carga acumulada y valorar un ajuste individual; contemplar ultimos 7 dias.";
+						}
+						if (reds === 1 && yellows >= 1) {
+							return "Se detectan desvíos relevantes en más de una métrica. Recomendable profundizar el seguimiento y sumar contexto de la sesión; contemplar ultimos 7 dias.";
+						}
+						if (reds === 1 || yellows >= 2) {
+							return "Comportamiento intermedio respecto al grupo. Vale la pena monitorear la evolución del estímulo y su consistencia en próximas sesiones; revisar los ultimos 3,5 y 7 dias.";
+						}
+						if (greens >= 2 && yellows === 1) {
+							return "Perfil mayormente estable, aunque una de las métricas se aleja del grupo. Puede ser útil revisar el contexto individual y otras variables.";
+						}
+						if (greens === 3) {
+							return "Perfil estable dentro del grupo filtrado. El jugador se mantiene en una zona esperada para las métricas seleccionadas.";
+						}
 						return "Lectura disponible, aunque con información parcial para una conclusión más firme.";
 					}
-					function observacion(p, sCols, stats) {
-						let isOutlier = false;
-						sCols.forEach(col => {
-							const s = stats[col];
-							if (p[col] !== null && s.mean !== null && s.std && s.std > 0)
-								if (Math.abs((p[col] - s.mean) / s.std) > 2.5) isOutlier = true;
-						});
-						return isOutlier ? "⚠ Dato Outlier — Revisar tipo de sesión (RTT / diferenciado)" : "—";
-					}
 
-					// ── Update principal ──────────────────────────────────
 					function update() {
-						const selPos     = msPos.getSelected();
-						const selPlayers = getSelectedPlayers();
-						const sCols      = [sem1.value, sem2.value, sem3.value];
-						const xCol       = scatterX.value;
-						const yCol       = scatterY.value;
-						const sizeCol    = scatterSize.value;
+						const posVal = filterPos.value;
+						const sCols = [sem1.value, sem2.value, sem3.value];
+						const xCol = scatterX.value;
+						const yCol = scatterY.value;
+						const sizeCol = scatterSize.value;
 
-						// Filtrar registros
-						const filtered = records.filter(r => {
-							const okPos    = selPos.length === 0 || selPos.includes(String(r[mapping.pos_col]));
-							const okPlayer = selPlayers.length === 0 || selPlayers.includes(String(r[mapping.player_col]));
-							return okPos && okPlayer;
+						let filtered = records.filter(r => {
+							const okPos = posVal === "__all__" || String(r[mapping.pos_col]) === posVal;
+							return okPos;
 						});
 
-						// Agrupar por jugador
 						const grouped = {};
 						filtered.forEach(r => {
-							const p = r[mapping.player_col];
-							if (!grouped[p]) grouped[p] = [];
-							grouped[p].push(r);
+							const player = r[mapping.player_col];
+							if (!grouped[player]) grouped[player] = [];
+							grouped[player].push(r);
 						});
 
 						const players = Object.keys(grouped).map(player => {
 							const rows = grouped[player];
-							const obj  = { jugador: player, posicion: String(rows[0][mapping.pos_col] || "") };
-							sCols.forEach(col => { obj[col] = mean(rows.map(r => asNumber(r[col]))); });
-							obj[xCol]    = mean(rows.map(r => asNumber(r[xCol])));
-							obj[yCol]    = mean(rows.map(r => asNumber(r[yCol])));
+							const obj = { jugador: player };
+							sCols.forEach(col => {
+								const vals = rows.map(r => asNumber(r[col]));
+								obj[col] = mean(vals);
+							});
+							obj[xCol] = mean(rows.map(r => asNumber(r[xCol])));
+							obj[yCol] = mean(rows.map(r => asNumber(r[yCol])));
 							obj[sizeCol] = mean(rows.map(r => asNumber(r[sizeCol])));
 							return obj;
 						});
 
-						// Stats
 						const stats = {};
 						[...new Set([...sCols, xCol, yCol, sizeCol])].forEach(col => {
 							const vals = players.map(p => p[col]);
 							const m = mean(vals);
-							stats[col] = { mean: m, std: std(vals, m) };
+							const s = std(vals, m);
+							stats[col] = {mean: m, std: s};
 						});
 
-						// Clasificar
 						players.forEach(p => {
 							p.statuses = sCols.map(col => classify(p[col], stats[col].mean, stats[col].std));
-							const r = p.statuses.filter(s=>s==="rojo").length;
-							const y = p.statuses.filter(s=>s==="amarillo").length;
-							p.global = r>=2 ? "rojo" : (r===1||y>=2) ? "amarillo" : "verde";
-							p.reco   = recommendation(p.statuses);
-							p.obs    = observacion(p, sCols, stats);
+							const reds = p.statuses.filter(s => s === "rojo").length;
+							const yellows = p.statuses.filter(s => s === "amarillo").length;
+							if (reds >= 2) p.global = "rojo";
+							else if (reds === 1 || yellows >= 2) p.global = "amarillo";
+							else p.global = "verde";
+							p.reco = recommendation(p.statuses);
 						});
 
-						// Ordenar por posición → jugador
-						players.sort((a,b) => a.posicion.localeCompare(b.posicion) || a.jugador.localeCompare(b.jugador));
-
-						// ── Tabla ─────────────────────────────────────────
 						const table = document.getElementById("semaforo-table");
-						let html = '<table class="demo-table"><thead><tr>'
-							+ '<th>Jugador</th><th>Posición</th>';
+						let html = '<table class="demo-table"><thead><tr><th>Jugador</th>';
 						sCols.forEach(col => html += `<th>${col}</th>`);
-						html += '<th>Estado</th><th>Lectura</th><th>Observaciones</th></tr></thead><tbody>';
+						html += '<th>Estado</th><th>Lectura</th></tr></thead><tbody>';
 
 						players.forEach(p => {
-							const obsStyle = p.obs.startsWith("⚠") ? ' style="color:#f59e0b;font-weight:700;"' : '';
-							html += `<tr><td>${p.jugador}</td><td>${p.posicion}</td>`;
+							html += `<tr><td>${p.jugador}</td>`;
 							sCols.forEach((col, idx) => {
-								const val = p[col] == null ? "-" : p[col].toFixed(1);
-								html += `<td>${val}<br>${statusHtml(p.statuses[idx])}</td>`;
+								const value = p[col] == null ? "-" : p[col].toFixed(1);
+								html += `<td>${value}<br>${statusHtml(p.statuses[idx])}</td>`;
 							});
-							html += `<td>${statusHtml(p.global)}</td><td>${p.reco}</td><td${obsStyle}>${p.obs}</td></tr>`;
+							html += `<td>${statusHtml(p.global)}</td><td>${p.reco}</td></tr>`;
 						});
 						html += "</tbody></table>";
 						table.innerHTML = html;
 
-						// ── Interpretación ────────────────────────────────
-						const reds     = players.filter(p=>p.global==="rojo").length;
-						const yellows  = players.filter(p=>p.global==="amarillo").length;
-						const outliers = players.filter(p=>p.obs.startsWith("⚠")).length;
-						document.getElementById("demo-interpretation").innerHTML = `
+						const interpretation = document.getElementById("demo-interpretation");
+						const reds = players.filter(p => p.global === "rojo").length;
+						const yellows = players.filter(p => p.global === "amarillo").length;
+						interpretation.innerHTML = `
 							<strong>Lectura automática.</strong>
-							${selPos.length===posValues.length ? "Todas las posiciones" : "Posiciones: <strong>"+selPos.join(", ")+"</strong>"}.
-							Se detectan <strong>${reds}</strong> jugadores en rojo y <strong>${yellows}</strong> en amarillo.
-							${outliers > 0 ? `<strong>${outliers}</strong> jugador(es) con datos outlier — revisar tipo de sesión.` : ""}
-							Scatter: <strong>${xCol}</strong> (X) · <strong>${yCol}</strong> (Y) · tamaño por <strong>${sizeCol}</strong>.
-						`;
+							Para la posición <strong>${posVal === "__all__" ? "seleccionada" : posVal}</strong>,
+							se detectan <strong>${reds}</strong> jugadores en rojo y <strong>${yellows}</strong> en amarillo.
+							El scatter ubica el perfil del grupo según <strong>${xCol}</strong> en X, <strong>${yCol}</strong> en Y
+							y tamaño por <strong>${sizeCol}</strong>, ayudando a identificar perfiles de exigencia y exposición en la sesión total.
+							`;
 
-						// ── Scatter ───────────────────────────────────────
-						Plotly.newPlot('scatter-chart', [{
-							x: players.map(p=>p[xCol]),
-							y: players.map(p=>p[yCol]),
-							text: players.map(p=>p.jugador),
-							customdata: players.map(p=>[
-								p[sizeCol]!=null ? p[sizeCol].toFixed(1) : "-",
-								p.posicion
-							]),
+						const trace = {
+							x: players.map(p => p[xCol]),
+							y: players.map(p => p[yCol]),
+							text: players.map(p => p.jugador),
 							mode: 'markers+text',
 							textposition: 'top center',
 							marker: {
-								size: players.map(p=>(p[sizeCol]||0)*0.8+10),
-								color: players.map(p=>p.global==='rojo'?'#ef4444':p.global==='amarillo'?'#f59e0b':'#22c55e'),
+								size: players.map(p => (p[sizeCol] || 0) * 0.8 + 10),
+								color: players.map(p => {
+									if (p.global === 'rojo') return '#ef4444';
+									if (p.global === 'amarillo') return '#f59e0b';
+									return '#22c55e';
+								}),
 								opacity: 0.85,
-								line: {color:'#ffffff',width:1}
+								line: {color: '#ffffff', width: 1}
 							},
-							hovertemplate:
-								'<b>%{text}</b><br>' +
-								'Posición: %{customdata[1]}<br>' +
-								xCol + ': %{x:.1f}<br>' +
-								yCol + ': %{y:.1f}<br>' +
-								sizeCol + ': %{customdata[0]}<extra></extra>'
-						}], {
-							paper_bgcolor:'#0D1728', plot_bgcolor:'#0D1728',
-							font:{color:'#E5EEF8'},
-							margin:{l:40,r:20,t:20,b:40},
-							xaxis:{title:xCol, gridcolor:'rgba(255,255,255,.08)'},
-							yaxis:{title:yCol, gridcolor:'rgba(255,255,255,.08)'}
-						}, {responsive:true});
+							hovertemplate: '<b>%{text}</b><br>' + xCol + ': %{x:.1f}<br>' + yCol + ': %{y:.1f}<extra></extra>'
+						};
 
-						window._dashboardPlayers = players;
+						const layout = {
+							paper_bgcolor: '#0D1728',
+							plot_bgcolor: '#0D1728',
+							font: {color: '#E5EEF8'},
+							margin: {l: 40, r: 20, t: 20, b: 40},
+							xaxis: {title: xCol, gridcolor: 'rgba(255,255,255,.08)'},
+							yaxis: {title: yCol, gridcolor: 'rgba(255,255,255,.08)'}
+						};
+
+						Plotly.newPlot('scatter-chart', [trace], layout, {responsive: true});
 					}
 
-					// Listeners selects normales
-					[sem1,sem2,sem3,scatterX,scatterY,scatterSize].forEach(el => el.addEventListener("change", update));
+					[filterPos, sem1, sem2, sem3, scatterX, scatterY, scatterSize].forEach(el => {
+						el.addEventListener("change", update);
+					});
 
 					update();
 				})();
 				</script>
 				{% endif %}
-			{% endif %}
 			</div>
 		</section>
 
@@ -1170,7 +1025,8 @@
     </footer>
 
     <script>
-        // Plotly dashboard usa su propio script interno
+        const figure = {{ fig_json | safe }};
+        Plotly.newPlot("chart", figure.data, figure.layout, {responsive: true});
     </script>
 	
 	<script>
@@ -1306,6 +1162,10 @@
 			</p>
 			<div id="lead-error" class="lead-modal-error" style="display:none;"></div>
 			<div class="lead-modal-field">
+				<label for="lead-nombre">Nombre y Apellido *</label>
+				<input type="text" id="lead-nombre" placeholder="Juan Pérez" autocomplete="name">
+			</div>
+			<div class="lead-modal-field">
 				<label for="lead-email">Email profesional *</label>
 				<input type="email" id="lead-email" placeholder="ejemplo@club.com" autocomplete="email">
 			</div>
@@ -1357,8 +1217,9 @@
 
 		// Submit
 		submitBtn.addEventListener("click", async function() {
-			const email = document.getElementById("lead-email").value.trim();
-			const phone = document.getElementById("lead-phone").value.trim();
+			const nombre = document.getElementById("lead-nombre").value.trim();
+			const email  = document.getElementById("lead-email").value.trim();
+			const phone  = document.getElementById("lead-phone").value.trim();
 
 			errBox.style.display = "none";
 			submitBtn.textContent = "Guardando...";
@@ -1368,7 +1229,7 @@
 				const res = await fetch("/register-lead", {
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify({email, phone})
+					body: JSON.stringify({nombre, email, phone})
 				});
 				const data = await res.json();
 
@@ -1392,7 +1253,7 @@
 		});
 
 		// Enter en los inputs hace submit
-		["lead-email", "lead-phone"].forEach(function(id) {
+		["lead-nombre", "lead-email", "lead-phone"].forEach(function(id) {
 			const el = document.getElementById(id);
 			if (el) el.addEventListener("keydown", function(e) {
 				if (e.key === "Enter") submitBtn.click();
@@ -1401,6 +1262,7 @@
 	})();
 	</script>
 	{% endif %}
+			{% endif %}
 
 	<!-- ══════════════════════════════════════════════════════════
 	     LOGO DEL CLUB — carga y preview via JS (sin servidor)

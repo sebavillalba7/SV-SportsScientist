@@ -8,6 +8,8 @@ import uuid
 import re
 import csv
 from datetime import datetime
+import openpyxl
+from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = "sv_demo_secret_key_change_me"
@@ -16,6 +18,7 @@ UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 LEADS_FILE = Path("leads.csv")
+LEADS_KEY  = "svsports2026"  # cambiá esto por tu clave secreta
 
 BRAND = {
     "nombre": "Sebastián Villalba",
@@ -38,39 +41,92 @@ BRAND = {
 
 # ─── LEAD CAPTURE ───────────────────────────────────────────────────────────
 
-def save_lead(email: str, phone: str):
-    """Guarda el lead en leads.csv. Crea el archivo con header si no existe."""
+def save_lead(nombre: str, email: str, phone: str):
+    """Guarda el lead en leads.csv con fecha, nombre, email y celular."""
     file_exists = LEADS_FILE.exists()
     with open(LEADS_FILE, "a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         if not file_exists:
-            writer.writerow(["timestamp", "email", "phone"])
-        writer.writerow([datetime.now().isoformat(), email.strip(), phone.strip()])
+            writer.writerow(["Fecha", "Nombre y Apellido", "Email", "Celular"])
+        writer.writerow([
+            datetime.now().strftime("%d/%m/%Y %H:%M"),
+            nombre.strip(),
+            email.strip(),
+            phone.strip()
+        ])
 
 
 @app.route("/register-lead", methods=["POST"])
 def register_lead():
-    """Endpoint AJAX que valida y guarda el lead, luego marca la sesión."""
-    data = request.get_json(silent=True) or {}
-    email = data.get("email", "").strip()
-    phone = data.get("phone", "").strip()
+    """Endpoint AJAX: valida y guarda el lead, marca la sesión."""
+    data   = request.get_json(silent=True) or {}
+    nombre = data.get("nombre", "").strip()
+    email  = data.get("email",  "").strip()
+    phone  = data.get("phone",  "").strip()
 
-    # Validación básica de email
+    if not nombre:
+        return jsonify({"ok": False, "error": "Ingresá tu nombre y apellido."}), 400
+
     email_ok = re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email) is not None
-
-    # Validación básica de teléfono: acepta +54 9 3424391972 y variantes
-    # Debe tener entre 8 y 20 dígitos/espacios/guiones, puede empezar con +
-    phone_ok = re.match(r"^\+?[\d\s\-]{8,20}$", phone) is not None
-
     if not email_ok:
         return jsonify({"ok": False, "error": "El email no tiene un formato válido."}), 400
+
+    phone_ok = re.match(r"^\+?[\d\s\-]{8,20}$", phone) is not None
     if not phone_ok:
         return jsonify({"ok": False, "error": "El teléfono no tiene un formato válido. Ejemplo: +54 9 3424391972"}), 400
 
-    save_lead(email, phone)
+    save_lead(nombre, email, phone)
     session["lead_registered"] = True
-
     return jsonify({"ok": True})
+
+
+@app.route("/leads-download")
+def leads_download():
+    """Descarga los leads como Excel. Protegido por clave en la URL."""
+    key = request.args.get("key", "")
+    if key != LEADS_KEY:
+        return "Acceso denegado.", 403
+
+    if not LEADS_FILE.exists():
+        return "No hay leads registrados aún.", 200
+
+    # Leer CSV y convertir a Excel en memoria
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Leads"
+
+    # Estilo encabezado
+    from openpyxl.styles import Font, PatternFill, Alignment
+    header_font = Font(bold=True, color="FFFFFF")
+    header_fill = PatternFill("solid", fgColor="07111F")
+
+    with open(LEADS_FILE, newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        for row_idx, row in enumerate(reader, start=1):
+            for col_idx, value in enumerate(row, start=1):
+                cell = ws.cell(row=row_idx, column=col_idx, value=value)
+                if row_idx == 1:
+                    cell.font      = header_font
+                    cell.fill      = header_fill
+                    cell.alignment = Alignment(horizontal="center")
+
+    # Ajustar ancho de columnas
+    col_widths = [20, 30, 35, 20]
+    for i, width in enumerate(col_widths, start=1):
+        ws.column_dimensions[openpyxl.utils.get_column_letter(i)].width = width
+
+    # Guardar en memoria y enviar
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    from flask import send_file as sf
+    return sf(
+        output,
+        as_attachment=True,
+        download_name=f"leads_{datetime.now().strftime('%Y%m%d')}.xlsx",
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
 
 
 # ─── HELPERS ─────────────────────────────────────────────────────────────────
