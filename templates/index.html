@@ -507,22 +507,21 @@
 					</p>
 				</div>
 
-				<!-- ── GATEKEEPER: si no registró, muestra el bloque de acceso ── -->
-				{% if not lead_registered %}
+				<!-- ── GATEKEEPER: controlado 100% por JS via sessionStorage ── -->
 				<div class="lead-gate card upload-card" id="lead-gate">
 					<div class="lead-gate-icon">📊</div>
 					<h3>Acceso gratuito al Dashboard interactivo</h3>
 					<p>
-						Dejá tu email y celular para activar el análisis. Es gratis y sin spam —
+						Dejá tus datos para activar el análisis. Es gratis y sin spam —
 						te contactamos solo si querés llevar esto a tu equipo.
 					</p>
 					<button class="btn btn-primary" id="open-lead-modal-btn" style="margin-top:12px;">
 						QUIERO ACCEDER AL DASHBOARD
 					</button>
 				</div>
-				{% endif %}
 
-				{% if lead_registered %}
+				<!-- Contenido del dashboard — se muestra solo tras registro -->
+				<div id="dashboard-content" style="display:none;">
 
 				{% if upload_stage == "upload" %}
 				<div class="card upload-card">
@@ -940,6 +939,7 @@
 				})();
 				</script>
 				{% endif %}
+				</div><!-- end dashboard-content -->
 			</div>
 		</section>
 
@@ -1157,16 +1157,13 @@
 	</script>
 
 	<!-- ══════════════════════════════════════════════════════════
-	     MODAL DE REGISTRO — HTML del modal (Jinja2 lo controla)
+	     MODAL DE REGISTRO — 100% JS, sin Jinja
 	     ══════════════════════════════════════════════════════════ -->
-	{% if not lead_registered %}
 	<div id="lead-modal" class="lead-modal-overlay" style="display:none;" role="dialog" aria-modal="true">
 		<div class="lead-modal-box">
 			<div class="lead-modal-icon">📊</div>
 			<h3>Accedé al Dashboard de Análisis</h3>
-			<p>
-				Dejá tus datos para activar el demo gratuito. Solo te contactamos si querés llevar esto a tu club.
-			</p>
+			<p>Dejá tus datos para activar el demo gratuito. Solo te contactamos si querés llevar esto a tu club.</p>
 			<div id="lead-error" class="lead-modal-error" style="display:none;"></div>
 			<div class="lead-modal-field">
 				<label for="lead-nombre">Nombre y Apellido *</label>
@@ -1183,35 +1180,40 @@
 			<button id="lead-submit" class="btn btn-primary lead-modal-btn">
 				ACCEDER AL DASHBOARD GRATIS
 			</button>
-			<p class="lead-modal-legal">
-				Tus datos no se comparten. Solo te contactamos si lo pedís vos.
-			</p>
+			<p class="lead-modal-legal">Tus datos no se comparten. Solo te contactamos si lo pedís vos.</p>
 		</div>
 	</div>
 
 	<script>
 	(function() {
-		const modal     = document.getElementById("lead-modal");
-		const openBtn   = document.getElementById("open-lead-modal-btn");
-		const submitBtn = document.getElementById("lead-submit");
-		const errBox    = document.getElementById("lead-error");
+		const STORAGE_KEY  = "sv_lead_ok";
+		const modal        = document.getElementById("lead-modal");
+		const gate         = document.getElementById("lead-gate");
+		const dashContent  = document.getElementById("dashboard-content");
+		const openBtn      = document.getElementById("open-lead-modal-btn");
+		const submitBtn    = document.getElementById("lead-submit");
+		const errBox       = document.getElementById("lead-error");
 
-		if (!modal || !openBtn) return;
+		// Función que muestra el dashboard y oculta el gatekeeper
+		function unlockDashboard() {
+			if (gate)        gate.style.display        = "none";
+			if (dashContent) dashContent.style.display = "block";
+		}
+
+		// Si ya se registró antes (sessionStorage), desbloquear directo
+		if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+			unlockDashboard();
+		}
 
 		// Abrir modal al hacer click en el botón del gatekeeper
-		openBtn.addEventListener("click", function() {
-			modal.style.display = "flex";
-			document.getElementById("lead-nombre").focus();
-		});
-
-		// También abrir si hacen click en el link #dashboard del nav
-		document.querySelectorAll('a[href="#dashboard"]').forEach(function(a) {
-			a.addEventListener("click", function() {
-				if (document.getElementById("open-lead-modal-btn")) {
-					setTimeout(function() { modal.style.display = "flex"; }, 400);
-				}
+		if (openBtn) {
+			openBtn.addEventListener("click", function() {
+				modal.style.display = "flex";
+				setTimeout(function() {
+					document.getElementById("lead-nombre").focus();
+				}, 100);
 			});
-		});
+		}
 
 		// Cerrar si clickean fuera del box
 		modal.addEventListener("click", function(e) {
@@ -1224,37 +1226,39 @@
 			const email  = document.getElementById("lead-email").value.trim();
 			const phone  = document.getElementById("lead-phone").value.trim();
 
-			errBox.style.display = "none";
+			errBox.style.display  = "none";
 			submitBtn.textContent = "Guardando...";
-			submitBtn.disabled = true;
+			submitBtn.disabled    = true;
 
 			try {
 				const res  = await fetch("/register-lead", {
-					method: "POST",
+					method:  "POST",
 					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify({nombre, email, phone})
+					body:    JSON.stringify({nombre, email, phone})
 				});
 				const data = await res.json();
 
 				if (data.ok) {
+					sessionStorage.setItem(STORAGE_KEY, "1");
 					modal.style.display = "none";
-					window.location.href = "/#dashboard";
-					window.location.reload();
+					unlockDashboard();
+					// Scroll suave al dashboard
+					document.getElementById("dashboard").scrollIntoView({behavior:"smooth"});
 				} else {
-					errBox.textContent = data.error || "Error al guardar. Intentá de nuevo.";
-					errBox.style.display = "block";
+					errBox.textContent    = data.error || "Error al guardar. Intentá de nuevo.";
+					errBox.style.display  = "block";
 					submitBtn.textContent = "ACCEDER AL DASHBOARD GRATIS";
-					submitBtn.disabled = false;
+					submitBtn.disabled    = false;
 				}
 			} catch(e) {
-				errBox.textContent = "Error de conexión. Verificá tu internet.";
-				errBox.style.display = "block";
+				errBox.textContent    = "Error de conexión. Verificá tu internet.";
+				errBox.style.display  = "block";
 				submitBtn.textContent = "ACCEDER AL DASHBOARD GRATIS";
-				submitBtn.disabled = false;
+				submitBtn.disabled    = false;
 			}
 		});
 
-		// Enter en los inputs hace submit
+		// Enter en inputs hace submit
 		["lead-nombre", "lead-email", "lead-phone"].forEach(function(id) {
 			const el = document.getElementById(id);
 			if (el) el.addEventListener("keydown", function(e) {
@@ -1263,8 +1267,6 @@
 		});
 	})();
 	</script>
-	{% endif %}
-			{% endif %}
 
 	<!-- ══════════════════════════════════════════════════════════
 	     LOGO DEL CLUB — carga y preview via JS (sin servidor)
