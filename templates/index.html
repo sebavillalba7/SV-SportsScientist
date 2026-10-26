@@ -72,9 +72,14 @@
                     </div>
 
                     <div class="hero-head-side">
-                        <div class="hero-photo-wrap">
+                        <div class="hero-video-wrap">
                             <div class="hero-photo-glow"></div>
-                            <img src="{{ url_for('static', filename='img/seba-hero.png') }}" alt="Sebastián Villalba" class="hero-photo">
+                            <video class="hero-video" controls playsinline preload="metadata"
+                                   poster="{{ url_for('static', filename='img/video-gancho-poster.jpg') }}">
+                                <source src="{{ url_for('static', filename='video-gancho.mp4') }}" type="video/mp4">
+                            </video>
+                            <p class="hero-video-caption">▶ Mirá este video de 1 minuto antes de agendar</p>
+                            <a href="https://calendly.com/sebastiangvillalba/consultoria_gratuita" target="_blank" rel="noopener" class="btn btn-primary hero-video-cta">AGENDÁ TU CONSULTORÍA GRATIS</a>
                         </div>
                     </div>
                 </div>

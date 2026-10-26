@@ -2003,3 +2003,13 @@ section[id] {
 @media (max-width: 768px) {
     .hero-top .hero-head-side .hero-photo-wrap { max-width: 200px; margin: 0 auto; }
 }
+
+/* ===== Video gancho en el hero ===== */
+.hero-video-wrap { position: relative; width: 100%; max-width: 320px; margin-left: auto; display: flex; flex-direction: column; align-items: center; }
+.hero-video { position: relative; z-index: 1; width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 22px; border: 1px solid var(--border); box-shadow: 0 18px 40px rgba(0,0,0,.45); background: #000; }
+.hero-video-caption { position: relative; z-index: 1; margin: 12px 0 0; font-size: 14px; color: var(--text-soft); text-align: center; }
+.hero-video-cta { display: none; }
+@media (max-width: 980px) {
+    .hero-video-wrap { margin: 8px auto 0; max-width: 300px; }
+    .hero-video-cta { display: inline-flex; margin-top: 14px; }
+}
