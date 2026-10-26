@@ -31,9 +31,10 @@
 
             <nav>
                 <a href="#mentoria">Mentoría 1:1</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#trayectoria">Trayectoria</a>
                 <a href="#casos">Casos de Éxito</a>
+                <a href="#como-funciona">Cómo funciona</a>
+                <a href="#trayectoria">Trayectoria</a>
+                <a href="#faq">Preguntas</a>
                 <a href="#dashboard">Dashboard</a>
                 <a href="#contacto" class="btn-nav">Contacto</a>
             </nav>
@@ -46,9 +47,28 @@
             <div class="container hero-layout">
 
                 <div class="hero-top">
-                    <div class="hero-logo-side">
-                        <div class="hero-kicker">MENTORÍAS 1:1 · GPS · PERFORMANCE · DATA INTELLIGENCE</div>
-                        <img src="{{ url_for('static', filename='img/logo-sv.png') }}" alt="SV Sports Scientist" class="hero-logo-main">
+                    <div class="hero-logo-side hero-promise">
+                        <div class="hero-kicker">MENTORÍA 1:1 · GPS APLICADO AL FÚTBOL PROFESIONAL · DESDE 2015</div>
+
+                        <h1 class="hero-title-stencil">DEJÁ DE JUNTAR DATOS. EMPEZÁ A DECIDIR CON EL GPS.</h1>
+
+                        <h2 class="hero-subtitle">
+                            Ayudo a <span class="highlight">ANALISTAS</span> y preparadores físicos a usar el GPS con
+                            <span class="highlight">CRITERIO</span>,
+                            <span class="highlight">SEGURIDAD</span> e
+                            <span class="highlight">IMPACTO</span> real.
+                            En 60 días, dedicando 30 min por día, con tus propios datos.
+                        </h2>
+
+                        <div class="cta-row">
+                            <a href="https://calendly.com/sebastiangvillalba/consultoria_gratuita"
+                               target="_blank" rel="noopener"
+                               class="btn btn-primary">
+                                AGENDÁ TU CONSULTORÍA GRATIS
+                            </a>
+                            <a class="btn btn-secondary" href="#casos">VER CASOS REALES</a>
+                        </div>
+                        <p class="hero-microcopy">Llamada de 30 minutos · Sin compromiso · Profes y analistas de 5 países</p>
                     </div>
 
                     <div class="hero-head-side">
@@ -60,19 +80,8 @@
                 </div>
 
                 <div class="hero-copy">
-                    <div class="hero-pill">QUÉ HAGO</div>
-
-                    <h1 class="hero-title-stencil">MENTORÍA 1a1 EN GPS APLICADA AL FÚTBOL PROFESIONAL</h1>
-
-                    <h2 class="hero-subtitle">
-                        Ayudo a <span class="highlight">ANALISTAS</span> de rendimiento a usar el GPS con
-                        <span class="highlight">CRITERIO</span>,
-                        <span class="highlight">SEGURIDAD</span> e
-                        <span class="highlight">IMPACTO</span> real en el fútbol profesional.
-                    </h2>
-
                     <p class="lead">
-                        En 60 días y dedicando 30 min/día, trabajo con vos para que dejes atrás el miedo a tomar decisiones determinantes y empieces a interpretar los datos con fundamento, claridad y criterio profesional.
+                        Trabajo con vos para que dejes atrás el miedo a tomar decisiones determinantes y empieces a interpretar los datos con fundamento, claridad y criterio profesional.
                     </p>
 
                     <ul class="value-list">
@@ -81,15 +90,6 @@
                         <li>Tus pares de staff confiarán más en tu interpretación y te sentirás valorado.</li>
                         <li>Mejorarás tu perfil profesional y tu empleabilidad, incrementando tus ingresos.</li>
                     </ul>
-
-                    <div class="cta-row">
-                        <a href="https://calendly.com/sebastiangvillalba/consultoria_gratuita" 
-						   target="_blank" 
-						   class="btn btn-primary">
-							AGENDÁ CONSULTORÍA GRATIS
-						</a>
-                        <a class="btn btn-secondary" href="#casos">VER CASOS</a>
-                    </div>
 
                     <div class="socials">
                         <a href="{{ brand.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
@@ -126,6 +126,97 @@
 			</div>
 		</section>
 
+		<section id="casos" class="section">
+			<div class="container">
+				<div class="section-head">
+					<span class="eyebrow">Historias de éxito</span>
+					<h2>Profesionales que transformaron sus datos en decisiones</h2>
+					<p>
+						Cada proceso es distinto, pero todos comparten algo: pasar de mirar datos aislados
+						a construir criterios claros, aplicables y útiles para el día a día profesional.
+					</p>
+				</div>
+
+				<div class="success-carousel-wrap">
+					<button class="success-carousel-btn left" onclick="scrollSuccessCarousel(-1)">‹</button>
+
+					<div class="success-carousel" id="successCarousel">
+						<article class="success-card">
+							<img class="success-photo" src="{{ url_for('static', filename='img/caso-1.jpg') }}" alt="Facundo Camalé">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF Rugby</span>
+								</div>
+								<h3>Facundo Camalé <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/es.png') }}" alt="España"></h3>
+								<p class="success-role">Belenos RC</p>
+							</div>
+							<p class="success-text">
+								“Yo ya venía registrando datos, pero no tenía claro cómo ordenarlos ni cómo transformar esa información en algo realmente útil. Con la mentoría mejoré mi conocimiento técnico sobre GPS y pude organizar mejor mis procesos para empezar a construir mis propias bases de datos con más criterio.”
+							</p>
+						</article>
+
+						<article class="success-card">
+							<img class="success-photo" src="{{ url_for('static', filename='img/caso-2.jpg') }}" alt="Bruno Tartaglia">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF - Entrenador</span>
+								</div>
+								<h3>Bruno Tartaglia <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/ar.png') }}" alt="Argentina"></h3>
+								<p class="success-role">Entrenamiento</p>
+							</div>
+							<p class="success-text">
+								“La mentoría me ayudó a incorporar conocimientos mucho más claros sobre la lectura e interpretación de los datos aplicados al fútbol. Lo más valioso fue trabajarlo con casos prácticos y reales, porque eso me permitió entender mejor cómo llevarlo a mi día a día.”
+							</p>
+						</article>
+
+						<article class="success-card">
+							<img class="success-photo" src="{{ url_for('static', filename='img/caso-3.jpg') }}" alt="Andrés Sánchez">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF - Fútbol</span>
+								</div>
+								<h3>Andrés Sánchez <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/ar.png') }}" alt="Argentina"></h3>
+								<p class="success-role">Unión SF Juveniles</p>
+							</div>
+							<p class="success-text">
+								“Yo ya tenía conocimientos previos en GPS, pero la mentoría me permitió mejorar mucho la interpretación y el uso de los datos. Hoy los aplico con más sentido en la planificación y en el control de tareas, entendiendo mejor qué mirar y para qué.”
+							</p>
+						</article>
+
+						<article class="success-card">
+							<img class="success-photo" src="{{ url_for('static', filename='img/caso-4.jpg') }}" alt="Jesús Vallejo">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF - Fútbol</span>
+								</div>
+								<h3>Jesús Vallejo <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/co.png') }}" alt="Colombia"></h3>
+								<p class="success-role">PF Olancho FC · Honduras</p>
+							</div>
+							<p class="success-text">
+								“A pesar de mi trayectoria como preparador físico en el fútbol, sentía que necesitaba mejores herramientas para ordenar la información y tomar decisiones con más respaldo. La mentoría me dio recursos concretos para ganar seguridad y transmitir más confianza dentro del staff.”
+							</p>
+						</article>
+
+						<article class="success-card">
+							<img class="success-photo" src="{{ url_for('static', filename='img/caso-5.jpg') }}" alt="Ramiro Martínez">
+							<div class="success-card-head">
+								<div class="success-card-meta">
+									<span class="success-tag">PF - Fútbol</span>
+								</div>
+								<h3>Ramiro Martínez <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/uy.png') }}" alt="Uruguay"></h3>
+								<p class="success-role">Nacional MVD Juveniles</p>
+							</div>
+							<p class="success-text">
+								“A partir de lo aprendido, pude construir una base de datos mucho más sólida y desarrollar mis primeros reportes en Power BI con información real y aplicable. Eso me ayudó a dar un paso importante en la organización y presentación de mis datos.”
+							</p>
+						</article>
+					</div>
+
+					<button class="success-carousel-btn right" onclick="scrollSuccessCarousel(1)">›</button>
+				</div>
+			</div>
+		</section>
+
         <section id="mentoria" class="section">
             <div class="container">
                 <div class="section-head section-head-flex">
@@ -158,7 +249,7 @@
                                 <li>Interpretación práctica del GPS según objetivos.</li>
                                 <li>Diseño de reportes útiles para cuerpo técnico.</li>
                                 <li>Lectura individual y colectiva de cargas.</li>
-								<li>Introducción a visualizaciones con Power Bi.</li>
+								<li>Introducción a visualizaciones con Power BI.</li>
                                 <li>Criterios para comunicar decisiones con claridad y respaldo.</li>
                             </ul>
                         </div>
@@ -178,108 +269,36 @@
             </div>
         </section>
 
-        <section id="servicios" class="section alt">
+
+        <section id="como-funciona" class="section alt">
             <div class="container">
                 <div class="section-head">
-                    <span class="eyebrow">Servicios</span>
-                    <h2>Qué puedo aportar</h2>
+                    <span class="eyebrow">Cómo funciona</span>
+                    <h2>De la primera llamada a tu propio sistema en 60 días</h2>
                 </div>
+                <div class="steps-grid">
+                    <article class="card step-card">
+                        <div class="step-num">01</div>
+                        <h3>Consultoría gratuita</h3>
+                        <p>30 minutos por videollamada. Vemos cómo trabajás hoy con el GPS, qué querés lograr y si la mentoría encaja con vos.</p>
+                    </article>
+                    <article class="card step-card">
+                        <div class="step-num">02</div>
+                        <h3>Plan con tus datos</h3>
+                        <p>Armamos tu plan según tu club, tu categoría y tus datos (o los que te comparto, si todavía no trabajás con GPS).</p>
+                    </article>
+                    <article class="card step-card">
+                        <div class="step-num">03</div>
+                        <h3>60 días 1 a 1</h3>
+                        <p>Sesiones en vivo, WhatsApp de lunes a viernes y la comunidad en Skool. Terminás con tu tablero y tu forma de comunicar decisiones.</p>
+                    </article>
+                </div>
+                <div class="cta-row cta-center">
+                    <a href="https://calendly.com/sebastiangvillalba/consultoria_gratuita" target="_blank" rel="noopener" class="btn btn-primary">AGENDÁ TU CONSULTORÍA GRATIS</a>
+                </div>
+            </div>
+        </section>
 
-                <div class="cards-grid">
-
-				<!-- CARD -->
-				<div class="flip-card">
-					<div class="flip-card-inner">
-						<div class="flip-card-front">
-							<img src="{{ url_for('static', filename='img/card-mentoria.png') }}">
-							<h3>MENTORÍA 1a1 EN FUTBOL</h3>
-							<p>Dato mata RELATO</p>
-						</div>
-						<div class="flip-card-back">
-							<ul>
-								<li>Interpretación PRACTICA de datos del GPS</li>
-								<li>Reportes CLAROS para el staff</li>
-								<li>Decisiones con IMPACTO real</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-
-				<!-- CARD -->
-				<div class="flip-card">
-					<div class="flip-card-inner">
-						<div class="flip-card-front">
-							<img src="{{ url_for('static', filename='img/card-cargas.png') }}">
-							<h3>MONITOREO DE CARGAS</h3>
-							<p>Control REAL</p>
-						</div>
-						<div class="flip-card-back">
-							<ul>
-								<li>Control del MICRO, SESION Y TAREAS</li>
-								<li>Analisis de carga INDIVIDUAL</li>
-								<li>Ajustes según CONTEXTO</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-
-				<!-- CARD -->
-				<div class="flip-card">
-					<div class="flip-card-inner">
-						<div class="flip-card-front">
-							<img src="{{ url_for('static', filename='img/card-tecnologia.png') }}">
-							<h3>IMPLEMENTACIÓN A MEDIDA</h3>
-							<p>Tecnología con CRITERIO</p>
-						</div>
-						<div class="flip-card-back">
-							<ul>
-								<li>Selección de herramientas</li>
-								<li>Integración real</li>
-								<li>Adaptado a TU realidad</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-
-				<!-- CARD -->
-				<div class="flip-card">
-					<div class="flip-card-inner">
-						<div class="flip-card-front">
-							<img src="{{ url_for('static', filename='img/card-dashboard.png') }}">
-							<h3>DASHBOARDS DEPORTIVOS</h3>
-							<p>MÁS que un Grafico</p>
-						</div>
-						<div class="flip-card-back">
-							<ul>
-								<li>Datos accionables y DIGESTIBLES</li>
-								<li>Seguimiento por JUGADOR</li>
-								<li>Lectura rápida e INTEGRADA</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-
-				<!-- CARD -->
-				<div class="flip-card">
-					<div class="flip-card-inner">
-						<div class="flip-card-front">
-							<img src="{{ url_for('static', filename='img/card-analisis.png') }}">
-							<h3>ANÁLISIS DE DATOS Y DECISIONES</h3>
-							<p>CRITERIO sobre el dato</p>
-						</div>
-						<div class="flip-card-back">
-							<ul>
-								<li>Campo + datos + CONTEXTO + Experiencia</li>
-								<li>Interpretacion PROFESIONAL</li>
-								<li>TRANSFORMACION tangible</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</section>
-		
         <section id="trayectoria" class="section">
             <div class="container">
                 <div class="section-head">
@@ -305,7 +324,7 @@
                          <div>
                                 <span class="timeline-date">2022 – Presente</span>
                                 <h3>Club Atlético Unión — Sports Scientist</h3>
-                                <p>Plantel profesional de Futbol AFA. Monitoreo y gestión de cargas de trabajo, evaluaciones físicas y coordinación del área de análisis de rendimiento.</p>
+                                <p>Plantel profesional de Fútbol AFA. Monitoreo y gestión de cargas de trabajo, evaluaciones físicas y coordinación del área de análisis de rendimiento.</p>
                             </div>
                         </div>
 
@@ -319,7 +338,7 @@
                         </div>
 
                         <div class="timeline-item timeline-item-logo">
-                            <img src="{{ url_for('static', filename='img/club-union.png') }}" alt="Unión básquet" class="timeline-logo">
+                            <img src="{{ url_for('static', filename='img/club-basquet.png') }}" alt="Unión básquet" class="timeline-logo">
                             <div>
                                 <span class="timeline-date">01/2021 – 06/2023</span>
                                 <h3>Club Atlético Unión — Preparador Físico de Básquet</h3>
@@ -402,96 +421,108 @@
             </div>
         </section>
 
-		<section id="casos" class="section">
-			<div class="container">
-				<div class="section-head">
-					<span class="eyebrow">Historias de éxito</span>
-					<h2>Profesionales que transformaron sus datos en decisiones</h2>
-					<p>
-						Cada proceso es distinto, pero todos comparten algo: pasar de mirar datos aislados
-						a construir criterios claros, aplicables y útiles para el día a día profesional.
-					</p>
-				</div>
+        <section id="servicios" class="section alt">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">Servicios</span>
+                    <h2>Qué puedo aportar</h2>
+                </div>
 
-				<div class="success-carousel-wrap">
-					<button class="success-carousel-btn left" onclick="scrollSuccessCarousel(-1)">‹</button>
+                <div class="cards-grid">
 
-					<div class="success-carousel" id="successCarousel">
-						<article class="success-card">
-							<img class="success-photo" src="{{ url_for('static', filename='img/caso-1.jpg') }}" alt="Facundo Camale">
-							<div class="success-card-head">
-								<div class="success-card-meta">
-									<span class="success-tag">PF Rugby</span>
-								</div>
-								<h3>Facundo Camalé <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/es.png') }}" alt="España"></h3>
-								<p class="success-role">Belenos RC</p>
-							</div>
-							<p class="success-text">
-								“Yo ya venía registrando datos, pero no tenía claro cómo ordenarlos ni cómo transformar esa información en algo realmente útil. Con la mentoría mejoré mi conocimiento técnico sobre GPS y pude organizar mejor mis procesos para empezar a construir mis propias bases de datos con más criterio.”
-							</p>
-						</article>
-
-						<article class="success-card">
-							<img class="success-photo" src="{{ url_for('static', filename='img/caso-2.jpg') }}" alt="Bruno Tartaglia">
-							<div class="success-card-head">
-								<div class="success-card-meta">
-									<span class="success-tag">PF - Entrenador</span>
-								</div>
-								<h3>Bruno Tartaglia <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/ar.png') }}" alt="Argentina"></h3>
-								<p class="success-role">Entrenamiento</p>
-							</div>
-							<p class="success-text">
-								“La mentoría me ayudó a incorporar conocimientos mucho más claros sobre la lectura e interpretación de los datos aplicados al fútbol. Lo más valioso fue trabajarlo con casos prácticos y reales, porque eso me permitió entender mejor cómo llevarlo a mi día a día.”
-							</p>
-						</article>
-
-						<article class="success-card">
-							<img class="success-photo" src="{{ url_for('static', filename='img/caso-3.jpg') }}" alt="Andrés Sánchez">
-							<div class="success-card-head">
-								<div class="success-card-meta">
-									<span class="success-tag">PF - Fútbol</span>
-								</div>
-								<h3>Andrés Sánchez <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/ar.png') }}" alt="Argentina"></h3>
-								<p class="success-role">Unión SF Juveniles</p>
-							</div>
-							<p class="success-text">
-								“Yo ya tenía conocimientos previos en GPS, pero la mentoría me permitió mejorar mucho la interpretación y el uso de los datos. Hoy los aplico con más sentido en la planificación y en el control de tareas, entendiendo mejor qué mirar y para qué.”
-							</p>
-						</article>
-
-						<article class="success-card">
-							<img class="success-photo" src="{{ url_for('static', filename='img/caso-4.jpg') }}" alt="Jesús Vallejo">
-							<div class="success-card-head">
-								<div class="success-card-meta">
-									<span class="success-tag">PF - Fútbol</span>
-								</div>
-								<h3>Jesús Vallejo <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/co.png') }}" alt="Colombia"></h3>
-								<p class="success-role">PF Olancho FC · Honduras</p>
-							</div>
-							<p class="success-text">
-								“A pesar de mi trayectoria como preparador físico en el fútbol, sentía que necesitaba mejores herramientas para ordenar la información y tomar decisiones con más respaldo. La mentoría me dio recursos concretos para ganar seguridad y transmitir más confianza dentro del staff.”
-							</p>
-						</article>
-
-						<article class="success-card">
-							<img class="success-photo" src="{{ url_for('static', filename='img/caso-5.jpg') }}" alt="Ramiro Martínez">
-							<div class="success-card-head">
-								<div class="success-card-meta">
-									<span class="success-tag">PF - Fútbol</span>
-								</div>
-								<h3>Ramiro Martínez <img class="success-flag-img" src="{{ url_for('static', filename='img/flags/uy.png') }}" alt="Uruguay"></h3>
-								<p class="success-role">Nacional MVD Juveniles</p>
-							</div>
-							<p class="success-text">
-								“A partir de lo aprendido, pude construir una base de datos mucho más sólida y desarrollar mis primeros reportes en Power BI con información real y aplicable. Eso me ayudó a dar un paso importante en la organización y presentación de mis datos.”
-							</p>
-						</article>
+				<!-- CARD -->
+				<div class="flip-card">
+					<div class="flip-card-inner">
+						<div class="flip-card-front">
+							<img src="{{ url_for('static', filename='img/card-mentoria.png') }}">
+							<h3>MENTORÍA 1a1 EN FÚTBOL</h3>
+							<p>Dato mata RELATO</p>
+						</div>
+						<div class="flip-card-back">
+							<ul>
+								<li>Interpretación PRÁCTICA de datos del GPS</li>
+								<li>Reportes CLAROS para el staff</li>
+								<li>Decisiones con IMPACTO real</li>
+							</ul>
+						</div>
 					</div>
-
-					<button class="success-carousel-btn right" onclick="scrollSuccessCarousel(1)">›</button>
 				</div>
+
+				<!-- CARD -->
+				<div class="flip-card">
+					<div class="flip-card-inner">
+						<div class="flip-card-front">
+							<img src="{{ url_for('static', filename='img/card-cargas.png') }}">
+							<h3>MONITOREO DE CARGAS</h3>
+							<p>Control REAL</p>
+						</div>
+						<div class="flip-card-back">
+							<ul>
+								<li>Control del MICRO, SESION Y TAREAS</li>
+								<li>Análisis de carga INDIVIDUAL</li>
+								<li>Ajustes según CONTEXTO</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- CARD -->
+				<div class="flip-card">
+					<div class="flip-card-inner">
+						<div class="flip-card-front">
+							<img src="{{ url_for('static', filename='img/card-tecnologia.png') }}">
+							<h3>IMPLEMENTACIÓN A MEDIDA</h3>
+							<p>Tecnología con CRITERIO</p>
+						</div>
+						<div class="flip-card-back">
+							<ul>
+								<li>Selección de herramientas</li>
+								<li>Integración real</li>
+								<li>Adaptado a TU realidad</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- CARD -->
+				<div class="flip-card">
+					<div class="flip-card-inner">
+						<div class="flip-card-front">
+							<img src="{{ url_for('static', filename='img/card-dashboard.png') }}">
+							<h3>DASHBOARDS DEPORTIVOS</h3>
+							<p>MÁS que un Grafico</p>
+						</div>
+						<div class="flip-card-back">
+							<ul>
+								<li>Datos accionables y DIGESTIBLES</li>
+								<li>Seguimiento por JUGADOR</li>
+								<li>Lectura rápida e INTEGRADA</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- CARD -->
+				<div class="flip-card">
+					<div class="flip-card-inner">
+						<div class="flip-card-front">
+							<img src="{{ url_for('static', filename='img/card-analisis.png') }}">
+							<h3>ANÁLISIS DE DATOS Y DECISIONES</h3>
+							<p>CRITERIO sobre el dato</p>
+						</div>
+						<div class="flip-card-back">
+							<ul>
+								<li>Campo + datos + CONTEXTO + Experiencia</li>
+								<li>Interpretacion PROFESIONAL</li>
+								<li>TRANSFORMACION tangible</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</section>
+		
 
 
 
@@ -1018,6 +1049,42 @@
                         <img src="{{ url_for('static', filename='img/club-patronato.png') }}" alt="Patronato">
                         <img src="{{ url_for('static', filename='img/club-villadora.png') }}" alt="Villa Dora">
                     </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="faq" class="section">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">Preguntas frecuentes</span>
+                    <h2>Lo que más me preguntan antes de arrancar</h2>
+                </div>
+                <div class="faq-list">
+                    <details class="card faq-item">
+                        <summary>¿Cuánto tiempo necesito por día?</summary>
+                        <p>Unos 30 minutos por día durante 60 días, más las sesiones 1 a 1 en vivo que coordinamos según tu agenda.</p>
+                    </details>
+                    <details class="card faq-item">
+                        <summary>¿Tengo que trabajar en Primera para hacer la mentoría?</summary>
+                        <p>No. Trabajo con profes y analistas de distintas categorías y países. Si todavía no tenés datos propios, arrancamos con datos reales que te comparto.</p>
+                    </details>
+                    <details class="card faq-item">
+                        <summary>¿Qué necesito tener instalado?</summary>
+                        <p>Excel o Microsoft 365, Power BI Desktop, Google Meet y TeamViewer o AnyDesk para las sesiones. Antes de empezar probamos juntos la conexión.</p>
+                    </details>
+                    <details class="card faq-item">
+                        <summary>¿Se puede pagar en cuotas?</summary>
+                        <p>Sí. Hay opción de pago en cuotas, y si vivís en Argentina podés pagar en pesos al dólar oficial del Banco Nación. Lo vemos en la consultoría.</p>
+                    </details>
+                    <details class="card faq-item">
+                        <summary>¿Es un curso grabado?</summary>
+                        <p>No. Es una mentoría 1 a 1: trabajamos sobre tu caso y tus datos. El contenido grabado de Skool es un complemento, no el centro.</p>
+                    </details>
+                    <details class="card faq-item">
+                        <summary>¿Qué pasa después de agendar?</summary>
+                        <p>Te llega la confirmación con el link de Meet. En la llamada vemos tu situación y, si encaja, arrancamos esa misma semana.</p>
+                    </details>
                 </div>
             </div>
         </section>
